@@ -4,9 +4,9 @@
 #include <stdio.h>
 
 void imprimir_ahorcado(int num_intento);
-void cargarPalabras(FILE *archivo);
 void anadirPalabra(FILE *archivo, char *palabra);
-void cargarPalabras(); // BASES DE DATOS
-void establecerMaxIntentos(int num);
+char* cargarPalabrasFichero(FILE *archivo, char* palabras);
+void cargarPalabrasBases(); // BASES DE DATOS -- Por implementar
+void establecerMaxIntentos(int numEstablecido, int nuevoNumero);
 
 #endif 
