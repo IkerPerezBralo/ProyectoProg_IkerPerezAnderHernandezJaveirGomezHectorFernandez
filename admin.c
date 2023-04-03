@@ -2,10 +2,84 @@
 #include <stdio.h>
 #include <string.h>
 #include "sqlite3.h"
-
+#define PALABRA_MAS_LARGA 10
 // Función para imprimir la figura del ahorcado
 void imprimir_ahorcado(int intentos) // No se si esto puede ir en administrador o solo en cliente
 {
+    switch (intentos)
+    {
+    case 0:
+        printf("  +---+\n");
+        printf("  |   |\n");
+        printf("      |\n");
+        printf("      |\n");
+        printf("      |\n");
+        printf("      |\n");
+        printf("=========\n");
+        break;
+
+    case 1:
+        printf("  +---+\n");
+        printf("  |   |\n");
+        printf("  O   |\n");
+        printf("      |\n");
+        printf("      |\n");
+        printf("      |\n");
+        printf("=========\n");
+        break;
+    
+    case 2:
+        printf("  +---+\n");
+        printf("  |   |\n");
+        printf("  O   |\n");
+        printf("  |   |\n");
+        printf("      |\n");
+        printf("      |\n");
+        printf("=========\n");
+        break;
+
+    case 3:
+        printf("  +---+\n");
+        printf("  |   |\n");
+        printf("  O   |\n");
+        printf(" /|   |\n");
+        printf("      |\n");
+        printf("      |\n");
+        printf("=========\n");
+        break;
+
+    case 4:
+        printf("  +---+\n");
+        printf("  |   |\n");
+        printf("  O   |\n");
+        printf(" /|\\  |\n");
+        printf("      |\n");
+        printf("      |\n");
+        printf("=========\n");
+        break;
+
+    case 5:
+        printf("  +---+\n");
+        printf("  |   |\n");
+        printf("  O   |\n");
+        printf(" /|\\  |\n");
+        printf(" /    |\n");
+        printf("      |\n");
+        printf("=========\n");
+        break;
+    default:
+        printf("  +---+\n");
+        printf("  |   |\n");
+        printf("  O   |\n");
+        printf(" /|\\  |\n");
+        printf(" / \\  |\n");
+        printf("      |\n");
+        printf("=========\n");
+        break;
+    }
+
+
+    /*
     if (intentos == 0)
     {
         printf("  +---+\n");
@@ -76,6 +150,7 @@ void imprimir_ahorcado(int intentos) // No se si esto puede ir en administrador 
         printf("      |\n");
         printf("=========\n");
     }
+    */
 }
 
 char* cargarPalabrasFichero(FILE *archivo, char* palabras) // TO DO ==> HAY QUE HACER MALLOC PARA RESERVAR ESPACIO DE MEMORIA
@@ -121,7 +196,10 @@ void cargarPalabrasBases() // BASES DE DATOS -- Por implementar
 {
 
 }
+
+
 void establecerMaxIntentos(int *numEstablecido, int nuevoNumero)
 {
-    numEstablecido = nuevoNumero;
+    *numEstablecido = nuevoNumero;
 }
+
