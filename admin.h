@@ -14,7 +14,7 @@ char* palabraAleatoria(FILE* archivo,  int numPalabras);
 int conseguirNumeroPalabras(FILE* archivoNumPalabras);
 void aumentarNumPalabras(FILE* archivoNumpalabras,int cantAaumentar);
 
-void menu();
+int menu();
 
 
 

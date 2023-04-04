@@ -1,5 +1,6 @@
 #include "admin.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "sqlite3.h"
 #include <unistd.h>
@@ -194,9 +195,9 @@ void aumentarNumPalabras(FILE* archivoNumpalabras,int cantAaumentar)
      
 }
 
-void menu(){
+int menu(){
     int opcion;
-    printf("Bienvenido al sistema de administración de Ahorcado - The Game.\n");
+    printf("Bienvenido al sistema de administracion de Ahorcado - The Game.\n");
     do {
         printf("\nSeleccione una opción:\n");
         printf("1. Iniciar partida (mantenimiento)\n");
@@ -207,22 +208,22 @@ void menu(){
         scanf("%d", &opcion);
         switch(opcion) {
             case 1:
-                //iniciarPartida();
+                return 1;
                 break;
             case 2:
-                anadirPalabra(FILE *archivo, char *palabra);
+                return 2;
                 break;
             case 3:
-                //borrarPalabra();
+                return 3;
                 break;
             case 4:
-                //navegarListaPalabras();
+                return 4;
                 break;
             case 0:
-                printf("Saliendo del sistema de administración...\n");
+                printf("Saliendo del sistema de administracion...\n");
                 break;
             default:
-                printf("Opción inválida, por favor seleccione de nuevo.\n");
+                printf("Opcion invalida, por favor seleccione de nuevo.\n");
         }
     } while(opcion != 0);
 }
