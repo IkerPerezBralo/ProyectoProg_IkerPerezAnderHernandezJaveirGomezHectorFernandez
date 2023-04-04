@@ -186,15 +186,43 @@ void aumentarNumPalabras(FILE* archivoNumpalabras,int cantAaumentar)
     //FILE* archivoAux;
     int numPalabras = conseguirNumeroPalabras( archivoNumpalabras);
     numPalabras+= cantAaumentar;
-   
-
 
     archivoNumpalabras = fopen(ARCHIVO_NUM_PALABRAS,"w"); 
-    
-    
-    
     fprintf(archivoNumpalabras, "%i\n", numPalabras);
 
     fclose(archivoNumpalabras);
      
+}
+
+void menu(){
+    int opcion;
+    printf("Bienvenido al sistema de administración de Ahorcado - The Game.\n");
+    do {
+        printf("\nSeleccione una opción:\n");
+        printf("1. Iniciar partida (mantenimiento)\n");
+        printf("2. Insertar palabra\n");
+        printf("3. Borrar palabra\n");
+        printf("4. Navegar lista de palabras\n");
+        printf("0. Salir\n");
+        scanf("%d", &opcion);
+        switch(opcion) {
+            case 1:
+                //iniciarPartida();
+                break;
+            case 2:
+                anadirPalabra(FILE *archivo, char *palabra);
+                break;
+            case 3:
+                //borrarPalabra();
+                break;
+            case 4:
+                //navegarListaPalabras();
+                break;
+            case 0:
+                printf("Saliendo del sistema de administración...\n");
+                break;
+            default:
+                printf("Opción inválida, por favor seleccione de nuevo.\n");
+        }
+    } while(opcion != 0);
 }
