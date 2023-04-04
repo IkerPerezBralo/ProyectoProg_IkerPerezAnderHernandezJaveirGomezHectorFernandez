@@ -10,7 +10,7 @@ char* cargarPalabrasFichero(FILE* archivo, char* palabras);
 void cargarPalabrasBases(); // BASES DE DATOS -- Por implementar
 
 void establecerMaxIntentos(int *numEstablecido, int nuevoNumero);
-char* palabraAleatoria(FILE* archivo);
+char* palabraAleatoria(FILE* archivo,  int numPalabras);
 int conseguirNumeroPalabras(FILE* archivoNumPalabras);
 void aumentarNumPalabras(FILE* archivoNumpalabras,int cantAaumentar);
 

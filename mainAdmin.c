@@ -1,12 +1,12 @@
 #include "admin.h"
 int main(void)
 {
-    FILE* archivo;
-    FILE* archivo2;
+    FILE* archivoPalabras;
+    FILE* archivoCantidad;
     //anadirPalabra(archivo, "AMOGUS");
     //printf("%d", conseguirNumeroPalabras(archivo));
     //aumentarNumPalabras(archivo,3);
     //printf("%d", conseguirNumeroPalabras(archivo, 4));
-    printf("%s", palabraAleatoria(archivo));
+    printf("%s", palabraAleatoria(archivoPalabras, conseguirNumeroPalabras(archivoCantidad)));
     return 0;
 }

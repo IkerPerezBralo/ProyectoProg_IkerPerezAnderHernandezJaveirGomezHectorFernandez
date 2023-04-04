@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "sqlite3.h"
+#include <unistd.h>
 #define PALABRA_MAS_LARGA 15
 #define NOMBRE_ARCHIVO_PALABRAS "palabras.txt"
 #define ARCHIVO_NUM_PALABRAS "numPalabras.txt"
@@ -131,40 +132,38 @@ void establecerMaxIntentos(int *numEstablecido, int nuevoNumero)
     *numEstablecido = nuevoNumero;
 }
 
-char* palabraAleatoria(FILE* archivo)
+char* palabraAleatoria(FILE* archivo, int numPalabras)
 {
+    archivo = fopen(NOMBRE_ARCHIVO_PALABRAS,"r"); 
+    
     char palabra[PALABRA_MAS_LARGA];
-    char numPalabras = conseguirNumeroPalabras(archivo);
     int numAleatorio = 0;
 
-    archivo = fopen(NOMBRE_ARCHIVO_PALABRAS,"r"); 
+    if (archivo == NULL) {
+        printf("No se pudieron obtener las palabras.\n");
+        return NULL;
+    }
+    srand(time(NULL));
+    numAleatorio = rand() % numPalabras + 1;
+    printf("%i\n", numAleatorio);
 
-   if (archivo == NULL) {
-      printf("No se pudieron obtener las palabras.\n");
-      return 0;
-   }
-    srand(time(NULL));//Inicializa semilla
-    numAleatorio = rand() % 10 + 1;
-    
+    // Mover el puntero de archivo al comienzo del archivo
+    rewind(archivo);
 
-    for (int i = 1; i <= numAleatorio; i++)
+    for (int i = 1; i <= numPalabras; i++)
     {
         if(i == numAleatorio)
         {
             fgets(palabra,PALABRA_MAS_LARGA, archivo);
-            sscanf(palabra, "%s", &palabra);
+            char* palabraTemp = malloc(PALABRA_MAS_LARGA * sizeof(char));
+            sscanf(palabra, "%s", palabraTemp);
             fclose(archivo);
-            return strdup(palabra);//Genera una copia dinamica de el string
+            return strdup(palabraTemp);
         } 
     }
-    
 
-
-
-   fclose(archivo); // Cerrar el archivo 
-
-   return NULL;
-
+    fclose(archivo);
+    return NULL;
 }
 
 int conseguirNumeroPalabras(FILE* archivoNumPalabras)
@@ -175,8 +174,7 @@ int conseguirNumeroPalabras(FILE* archivoNumPalabras)
 
     fgets(c,LONG_MAX_NUM_PALABRAS, archivoNumPalabras);
     sscanf(c, "%d", &num);
-
-
+    printf("El numero de palabras es: %d\n", num);
 
     fclose(archivoNumPalabras);
     return num;
