@@ -160,6 +160,7 @@ char* palabraAleatoria(FILE* archivo, int numPalabras)
             fclose(archivo);
             return strdup(palabraTemp);
         } 
+        fgets(palabra, PALABRA_MAS_LARGA, archivo);
     }
 
     fclose(archivo);
