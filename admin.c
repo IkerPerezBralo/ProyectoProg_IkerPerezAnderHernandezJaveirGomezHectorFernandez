@@ -11,7 +11,7 @@
 
 int menu(){
     int opcion;
-    printf("Bienvenido al sistema de administracion de Ahorcado - The Game.\n");
+    printf("\nBienvenido al sistema de administracion de Ahorcado - The Game.\n");
     do {
         printf("\nSeleccione una opción:\n");
         printf("1. Iniciar partida (mantenimiento)\n");

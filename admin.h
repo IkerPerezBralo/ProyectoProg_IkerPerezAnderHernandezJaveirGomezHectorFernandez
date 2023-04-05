@@ -15,7 +15,7 @@ int conseguirNumeroPalabras(FILE* archivoNumPalabras);
 void aumentarNumPalabras(FILE* archivoNumpalabras,int cantAaumentar);
 
 int menu();
-
+void borrarPalabra(FILE* archivo);
 
 
 #endif 
