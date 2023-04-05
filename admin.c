@@ -230,7 +230,36 @@ void aumentarNumPalabras(FILE* archivoNumpalabras,int cantAaumentar)
      
 }
 
-void borrarPalabra(FILE *archivo)
+void borrarPalabra(FILE* archivo)
 {
+    archivo = fopen(NOMBRE_ARCHIVO_PALABRAS,"r+");
     
+    if (archivo == NULL) {
+        printf("No se pudo abrir el archivo.\n");
+        return;
+    }
+    
+    char palabra[PALABRA_MAS_LARGA];
+    char palabraABuscar[PALABRA_MAS_LARGA];
+    printf("Ingrese la palabra a borrar: ");
+    scanf("%s", palabraABuscar);
+    
+    // Buscar la palabra en el archivo y eliminarla
+    while (fgets(palabra, PALABRA_MAS_LARGA, archivo) != NULL) {
+        char* palabraTemp = malloc(PALABRA_MAS_LARGA * sizeof(char));
+        sscanf(palabra, "%s", palabraTemp);
+        if (strcmp(palabraTemp, palabraABuscar) == 0) {
+            fseek(archivo, -strlen(palabra), SEEK_CUR);
+            for (int i = 0; i < strlen(palabra); i++) {
+                fputc(' ', archivo);
+            }
+            fclose(archivo);
+            printf("La palabra ha sido borrada del archivo.\n");
+            return;
+        }
+    }
+    
+    // Si la palabra no se encontró en el archivo, mostrar un mensaje de error
+    fclose(archivo);
+    printf("La palabra ingresada no fue encontrada en el archivo.\n");
 }
