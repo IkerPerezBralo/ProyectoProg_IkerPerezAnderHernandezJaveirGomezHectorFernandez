@@ -8,7 +8,40 @@
 #define NOMBRE_ARCHIVO_PALABRAS "palabras.txt"
 #define ARCHIVO_NUM_PALABRAS "numPalabras.txt"
 #define LONG_MAX_NUM_PALABRAS 4 //Longitud maxima del numero que representa el numero de palabras en el fichero
-// Función para imprimir la figura del ahorcado
+
+int menu(){
+    int opcion;
+    printf("Bienvenido al sistema de administracion de Ahorcado - The Game.\n");
+    do {
+        printf("\nSeleccione una opción:\n");
+        printf("1. Iniciar partida (mantenimiento)\n");
+        printf("2. Insertar palabra\n");
+        printf("3. Borrar palabra\n");
+        printf("4. Navegar lista de palabras\n");
+        printf("0. Salir\n");
+        scanf("%d", &opcion);
+        switch(opcion) {
+            case 1:
+                return 1;
+                break;
+            case 2:
+                return 2;
+                break;
+            case 3:
+                return 3;
+                break;
+            case 4:
+                return 4;
+                break;
+            case 0:
+                printf("Saliendo del sistema de administracion...\n");
+                break;
+            default:
+                printf("Opcion invalida, por favor seleccione de nuevo.\n");
+        }
+    } while(opcion != 0);
+}
+
 void imprimir_ahorcado(int intentos) // No se si esto puede ir en administrador o solo en cliente
 {
     switch (intentos)
@@ -109,16 +142,18 @@ void imprimir_ahorcado(int intentos) // No se si esto puede ir en administrador 
    return palabras;
 }
 */
-void anadirPalabra(FILE *archivo, char *palabra)
+void anadirPalabra(FILE *archivo)
 {
-    archivo = fopen("Palabras.txt","a"); /* Abrir archivo en modo lectura */
-    char pal[strlen(palabra)];
-    strcpy(pal, palabra);
+    archivo = fopen("Palabras.txt","a"); /* Abrir archivo en modo escritura */
+    char pal[100];
+    char buffer[1024];
+    printf("Ingrese la palabra a añadir al archivo: ");
+    fgets(buffer, 1024, stdin);
+    sscanf(buffer, "%s", pal);
     fprintf(archivo, "%s\n", pal);
     
     fclose(archivo); /* Cerrar el archivo */
     aumentarNumPalabras(archivo, 1);
-
 }
 
 
@@ -195,35 +230,36 @@ void aumentarNumPalabras(FILE* archivoNumpalabras,int cantAaumentar)
      
 }
 
-int menu(){
-    int opcion;
-    printf("Bienvenido al sistema de administracion de Ahorcado - The Game.\n");
-    do {
-        printf("\nSeleccione una opción:\n");
-        printf("1. Iniciar partida (mantenimiento)\n");
-        printf("2. Insertar palabra\n");
-        printf("3. Borrar palabra\n");
-        printf("4. Navegar lista de palabras\n");
-        printf("0. Salir\n");
-        scanf("%d", &opcion);
-        switch(opcion) {
-            case 1:
-                return 1;
-                break;
-            case 2:
-                return 2;
-                break;
-            case 3:
-                return 3;
-                break;
-            case 4:
-                return 4;
-                break;
-            case 0:
-                printf("Saliendo del sistema de administracion...\n");
-                break;
-            default:
-                printf("Opcion invalida, por favor seleccione de nuevo.\n");
+void borrarPalabra(FILE* archivo)
+{
+    archivo = fopen(NOMBRE_ARCHIVO_PALABRAS,"r+");
+    
+    if (archivo == NULL) {
+        printf("No se pudo abrir el archivo.\n");
+        return;
+    }
+    
+    char palabra[PALABRA_MAS_LARGA];
+    char palabraABuscar[PALABRA_MAS_LARGA];
+    printf("Ingrese la palabra a borrar: ");
+    scanf("%s", palabraABuscar);
+    
+    // Buscar la palabra en el archivo y eliminarla
+    while (fgets(palabra, PALABRA_MAS_LARGA, archivo) != NULL) {
+        char* palabraTemp = malloc(PALABRA_MAS_LARGA * sizeof(char));
+        sscanf(palabra, "%s", palabraTemp);
+        if (strcmp(palabraTemp, palabraABuscar) == 0) {
+            fseek(archivo, -strlen(palabra), SEEK_CUR);
+            for (int i = 0; i < strlen(palabra); i++) {
+                fputc(' ', archivo);
+            }
+            fclose(archivo);
+            printf("La palabra ha sido borrada del archivo.\n");
+            return;
         }
-    } while(opcion != 0);
+    }
+    
+    // Si la palabra no se encontró en el archivo, mostrar un mensaje de error
+    fclose(archivo);
+    printf("La palabra ingresada no fue encontrada en el archivo.\n");
 }
