@@ -4,7 +4,7 @@ int main(void)
     FILE* archivoPalabras;
     FILE* archivoCantidad;
     int opcion;
-    //anadirPalabra(archivo, "AMOGUS");
+    //anadirPalabra(archivo);
     //printf("%d", conseguirNumeroPalabras(archivo));
     //aumentarNumPalabras(archivo,3);
     //printf("%d", conseguirNumeroPalabras(archivo, 4));
