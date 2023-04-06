@@ -232,7 +232,7 @@ void aumentarNumPalabras(FILE* archivoNumpalabras,int cantAaumentar)
 
 void borrarPalabra(FILE* archivo) {
     archivo = fopen(NOMBRE_ARCHIVO_PALABRAS, "r+");
-    
+    FILE* archivoDeNumPalabras;
     if (archivo == NULL) {
         printf("No se pudo abrir el archivo.\n");
         return;
@@ -243,6 +243,7 @@ void borrarPalabra(FILE* archivo) {
     printf("Ingrese la palabra a borrar: ");
     fgets(palabraABuscar, PALABRA_MAS_LARGA, stdin);
     sscanf(palabraABuscar, "%s", palabraABuscar);
+    printf(palabraABuscar);
     
     // Buscar la palabra en el archivo y eliminarla
     char linea[PALABRA_MAS_LARGA];
@@ -250,12 +251,14 @@ void borrarPalabra(FILE* archivo) {
     while (fgets(linea, PALABRA_MAS_LARGA, archivo) != NULL) {
         char palabraTemp[PALABRA_MAS_LARGA];
         sscanf(linea, "%s", palabraTemp);
+        printf(palabraTemp);
         if (strcmp(palabraTemp, palabraABuscar) == 0) {
-            fseek(archivo, -strlen(linea), SEEK_CUR);
+            fseek(archivo, -(strlen(linea)+1), SEEK_CUR);
             for (int i = 0; i < strlen(linea); i++) {
                 fputc(' ', archivo);
             }
             fclose(archivo);
+            aumentarNumPalabras(archivoDeNumPalabras, -1);
             printf("La palabra ha sido borrada del archivo.\n");
             return;
         }
@@ -267,3 +270,58 @@ void borrarPalabra(FILE* archivo) {
     printf("La palabra ingresada no fue encontrada en el archivo.\n");
 }
 
+void borrarPalabra2(FILE* archivo) {
+    
+    FILE* archivoDeNumPalabras;
+    FILE* archivoAuxiliar;
+    archivo = fopen(NOMBRE_ARCHIVO_PALABRAS, "r+");
+    archivoAuxiliar = fopen("temp.txt", "w");
+
+    if (archivo == NULL || archivoAuxiliar == NULL) 
+    {
+        printf("No se pudo abrir el archivo.\n");
+        return;
+    }
+    
+    char palabra[PALABRA_MAS_LARGA + 3];//El más 3 es para evitar problemas de que haya algun caracter extra 
+    char palabraABuscar[PALABRA_MAS_LARGA];
+    char c;
+    printf("Ingrese la palabra a borrar: ");
+    fgets(palabraABuscar, PALABRA_MAS_LARGA, stdin);
+    sscanf(palabraABuscar, "%s", palabraABuscar);
+    
+    int i = 0;
+    while((c = fgetc(archivo)) != EOF)
+    {
+        if(c == ' ' || c == '\n'){
+            palabra[i] = '\0'; //Señala el final de la palabra cuando encuentra el final de la linea
+            if(strcmp(palabra, palabraABuscar) != 0)
+            {
+                fprintf(archivoAuxiliar, "%s\n", palabra);
+            }else
+            {
+                aumentarNumPalabras(archivoDeNumPalabras, -1);
+            }
+            i = 0;
+        }else
+        {   
+
+            palabra[i] = c;
+            i++;
+        }
+    }
+    
+
+    
+    fclose(archivo);
+    fclose(archivoAuxiliar);
+    remove(NOMBRE_ARCHIVO_PALABRAS);
+    rename("temp.txt",NOMBRE_ARCHIVO_PALABRAS);
+
+
+    printf("Eliminada con exito.\n");
+
+
+    }
+    
+   

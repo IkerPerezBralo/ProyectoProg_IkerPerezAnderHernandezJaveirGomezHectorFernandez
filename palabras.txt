@@ -3,7 +3,6 @@ caracol
 francia
 edificio
 zanahoria
-jardin
 mariposa
 guitarra
 elefante
@@ -187,7 +186,5 @@ isotopo
 jockey
 kilovatio
 lluvia
-mariposa
 nyu
 oto
-casa
