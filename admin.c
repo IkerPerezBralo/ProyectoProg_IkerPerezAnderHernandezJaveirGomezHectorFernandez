@@ -25,22 +25,22 @@ int menu(){
         scanf("%d", &opcion);
         switch(opcion) {
             case 1:
-                return 1;
+                
                 break;
             case 2:
                 anadirPalabra(archivoPalabras);
-                return 2;
+                
                 break;
             case 3:
                 borrarPalabra2(archivoPalabras);
-                return 3;
+                
                 break;
             case 4:
-                return 4;
+                
                 break;
             case 5:
                 menuGestionUsuarios();
-                return 5;
+                
                 break;
             case 0:
                 printf("Saliendo del sistema de administracion...\n");
@@ -187,22 +187,7 @@ void imprimir_ahorcado(int intentos) // No se si esto puede ir en administrador 
    return palabras;
 }
 */
-/*
-void anadirPalabra(FILE *archivo)
-{
-    archivo = fopen("Palabras.txt","a"); 
-    char pal[100];
-    char buffer[1024];
-    printf("Ingrese la palabra a añadir al archivo: ");
-    fgets(buffer, 1024, stdin);
-    sscanf(buffer, "%s", pal);
-    fprintf(archivo, "%s\n", pal);
-    
-    fclose(archivo); 
-    aumentarNumPalabras(archivo, 1);
 
-    
-}*/
 void anadirPalabra(FILE *archivo)
 {
     char palabraAnadir[PALABRA_MAS_LARGA];
@@ -218,10 +203,6 @@ void anadirPalabra(FILE *archivo)
 }
 
 
-void cargarPalabrasBases() // BASES DE DATOS -- Por implementar
-{
-
-}
 
 
 void establecerMaxIntentos(int *numEstablecido, int nuevoNumero)
@@ -358,10 +339,13 @@ void borrarPalabra2(FILE* archivo) {
             palabra[i] = '\0'; //Señala el final de la palabra cuando encuentra el final de la linea
             if(strcmp(palabra, palabraABuscar) != 0)
             {
+                
                 fprintf(archivoAuxiliar, "%s\n", palabra);
             }else
             {
+                printf("Eliminada con exito.\n");
                 aumentarNumPalabras(archivoDeNumPalabras, -1);
+
             }
             i = 0;
         }else
@@ -379,7 +363,7 @@ void borrarPalabra2(FILE* archivo) {
     rename("temp.txt",NOMBRE_ARCHIVO_PALABRAS);
 
 
-    printf("Eliminada con exito.\n");
+    
 
 
     }
