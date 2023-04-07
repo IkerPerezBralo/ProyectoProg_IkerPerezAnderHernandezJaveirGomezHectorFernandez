@@ -16,7 +16,7 @@ int main(void)
     //borrarPalabra2(archivoPalabras);
     menu();
     //opcion = menu();
-    
+    //imprimirPagina(1);
 
     return 0;
 }

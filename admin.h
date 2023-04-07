@@ -19,4 +19,6 @@ int menuGestionUsuarios();
 
 void borrarPalabra2(FILE* archivo);
 
+void imprimirPagina(int pagina);
+
 #endif 
