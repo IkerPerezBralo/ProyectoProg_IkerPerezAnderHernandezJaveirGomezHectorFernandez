@@ -20,7 +20,7 @@ int menu(){
         printf("1. Iniciar partida (mantenimiento)\n");
         printf("2. Insertar palabra\n");
         printf("3. Borrar palabra\n");
-        printf("4. Imprimir lista de palabras\n");
+        printf("4. Navegar por la lista de palabras\n");
         printf("5. Gestion de usuarios\n");
         printf("0. Salir\n");
         scanf("%d", &opcion);
@@ -37,7 +37,7 @@ int menu(){
                 
                 break;
             case 4:
-                
+                listadoDePalabras();
                 
                 break;
             case 5:
@@ -205,31 +205,7 @@ void imprimir_ahorcado(int intentos) // No se si esto puede ir en administrador 
     }
 }
 
-/*char* cargarPalabrasFichero(FILE* archivo, char* palabras) // TO DO ==> HAY QUE HACER MALLOC PARA RESERVAR ESPACIO DE MEMORIA
-{
-    char *palabra;
-    char c;
-    char numPalabras = 0;
-    archivo = fopen(NOMBRE_ARCHIVO_PALABRAS,"r"); 
 
-   if (archivo == NULL) {
-      printf("No se pudieron obtener las palabras.\n");
-      return;
-   }
-
-    while ((c = fgetc(archivo)) != EOF)
-	{
-		if (c == '\n')
-			numPalabras++;  
-		putchar(c);
-	}
-
-
-   fclose(archivo); // Cerrar el archivo 
-
-   return palabras;
-}
-*/
 
 void anadirPalabra(FILE *archivo)
 {
@@ -364,10 +340,94 @@ void borrarPalabra2(FILE* archivo) {
     fclose(archivoAuxiliar);
     remove(NOMBRE_ARCHIVO_PALABRAS);
     rename("temp.txt",NOMBRE_ARCHIVO_PALABRAS);
+    }
 
 
+
+    void imprimirPagina(int pagina)
+{
+    FILE* f;
+    f = fopen(NOMBRE_ARCHIVO_PALABRAS, "r");
+    int contadorPalabras = conseguirNumeroPalabras(f);
+    double numPags = contadorPalabras / 10;
+
+    if(contadorPalabras % 10 != 0 )
+    {
+        numPags++;
+    }
+
+    int primeraPalabra = pagina*10;
+    int ultimaPalabra = primeraPalabra + 10;
+
+    char palabra[PALABRA_MAS_LARGA];
+    char c;
+    int i = 0;
+    while ((c = fgetc(f)) != EOF && i <= ultimaPalabra && i<= contadorPalabras)
+    {
+        if (c == ' ' || c == '\n')
+        {
+            i++;
+        }
+        if(i>=primeraPalabra && i <= ultimaPalabra)
+        {
+            printf("%c", c);
+        }
+
+    }
+        printf("\n");
+    fclose(f);    
     
+}
 
+
+
+
+
+
+    void listadoDePalabras()
+    {
+        FILE* archivo;
+         int opcion;
+         int numPagina = 0;
+         int pagMax = (conseguirNumeroPalabras(archivo) / 10); 
+    
+    do {
+        printf("\nLISTA DE PALABRAS - PAG%i\n", numPagina);
+        imprimirPagina(numPagina);
+        if(numPagina <= 0)
+        {
+            printf("\n -------------------------  x. Atras / 2. Siguiente\n");
+         } 
+         else if(numPagina >= pagMax)
+         {
+            printf("\n -------------------------  1. Atras / x. Siguiente\n");
+         }
+        else
+        {
+            printf("\n -------------------------  1. Atras / 2. Siguiente\n");
+        }
+         
+        printf("0. Volver al menu\n");
+        scanf("%d", &opcion);
+        switch(opcion) {
+            case 1:
+                if(numPagina > 0){
+                    numPagina--;
+                }
+                break;
+            case 2:
+            if(numPagina <  pagMax)
+                numPagina++;
+                
+                break;
+            
+            case 0:
+                
+                break;
+            default:
+                printf("Opcion invalida, por favor seleccione de nuevo.\n");
+        }
+    } while(opcion != 0);
 
     }
     

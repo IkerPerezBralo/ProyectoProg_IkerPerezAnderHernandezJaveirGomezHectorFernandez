@@ -21,5 +21,6 @@ void borrarPalabra2(FILE* archivo);
 
 void anadirUsuarioConsola();
 void borrarUsuarioConsola();
-
+void imprimirPagina(int pagina);
+void listadoDePalabras();
 #endif 
