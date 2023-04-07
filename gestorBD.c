@@ -276,6 +276,9 @@ int listarUsuariosPagina(Usuario** outUsers,int pagina){
         sqlite3_shutdown();
         return -2;
     }
+    if(toPrint>10){
+        toPrint=10;
+    }
     *outUsers = (Usuario*)malloc(sizeof(Usuario)*toPrint); 
     query = sqlite3_mprintf("SELECT id,usuario FROM Usuarios LIMIT 10 OFFSET %d;", offset);
     sqlite3_stmt* preparedstmt2;
