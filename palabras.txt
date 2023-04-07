@@ -4,7 +4,6 @@ francia
 edificio
 zanahoria
 mariposa
-guitarra
 elefante
 helado
 camioneta
@@ -66,7 +65,6 @@ cangrejo
 delfin
 enchilada
 fotografia
-guitarra
 halcon
 incendio
 jalea
@@ -154,7 +152,6 @@ cerveceria
 dinosaurio
 eleccion
 fabrica
-guitarra
 hospital
 iglu
 jardin
@@ -188,3 +185,4 @@ kilovatio
 lluvia
 nyu
 oto
+patata

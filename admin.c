@@ -11,6 +11,8 @@
 
 int menu(){
     int opcion;
+    FILE* archivoPalabras;
+    FILE* archivoNumeroPalabras;
     printf("\nBienvenido al sistema de administracion de Ahorcado - The Game.\n");
     do {
         printf("\nSeleccione una opcion:\n");
@@ -18,6 +20,47 @@ int menu(){
         printf("2. Insertar palabra\n");
         printf("3. Borrar palabra\n");
         printf("4. Navegar lista de palabras\n");
+        printf("5. Gestion de usuarios\n");
+        printf("0. Salir\n");
+        scanf("%d", &opcion);
+        switch(opcion) {
+            case 1:
+                return 1;
+                break;
+            case 2:
+                anadirPalabra(archivoPalabras);
+                return 2;
+                break;
+            case 3:
+                borrarPalabra2(archivoPalabras);
+                return 3;
+                break;
+            case 4:
+                return 4;
+                break;
+            case 5:
+                menuGestionUsuarios();
+                return 5;
+                break;
+            case 0:
+                printf("Saliendo del sistema de administracion...\n");
+                break;
+            default:
+                printf("Opcion invalida, por favor seleccione de nuevo.\n");
+        }
+    } while(opcion != 0);
+}
+
+int menuGestionUsuarios(){
+      int opcion;
+    printf("\nSistema de Gestion de Usuarios de Ahorcado - The Game.\n");
+    do {
+        printf("\nSeleccione una opcion:\n");
+        printf("1. Crear Usuario\n");
+        printf("2. Borrar Usuario\n");
+        printf("3. Cambiar Nombre de Usuario\n");
+        printf("4. Cambiar Contrasenya\n");
+        printf("5. Atras\n");
         printf("0. Salir\n");
         scanf("%d", &opcion);
         switch(opcion) {
@@ -33,6 +76,9 @@ int menu(){
             case 4:
                 return 4;
                 break;
+            case 5:
+                return 5;
+                break;
             case 0:
                 printf("Saliendo del sistema de administracion...\n");
                 break;
@@ -41,7 +87,6 @@ int menu(){
         }
     } while(opcion != 0);
 }
-
 void imprimir_ahorcado(int intentos) // No se si esto puede ir en administrador o solo en cliente
 {
     switch (intentos)
@@ -142,9 +187,10 @@ void imprimir_ahorcado(int intentos) // No se si esto puede ir en administrador 
    return palabras;
 }
 */
+/*
 void anadirPalabra(FILE *archivo)
 {
-    archivo = fopen("Palabras.txt","a"); /* Abrir archivo en modo escritura */
+    archivo = fopen("Palabras.txt","a"); 
     char pal[100];
     char buffer[1024];
     printf("Ingrese la palabra a añadir al archivo: ");
@@ -152,6 +198,21 @@ void anadirPalabra(FILE *archivo)
     sscanf(buffer, "%s", pal);
     fprintf(archivo, "%s\n", pal);
     
+    fclose(archivo); 
+    aumentarNumPalabras(archivo, 1);
+
+    
+}*/
+void anadirPalabra(FILE *archivo)
+{
+    char palabraAnadir[PALABRA_MAS_LARGA];
+    printf("Ingrese la palabra a anadir: ");
+    fgets(palabraAnadir, PALABRA_MAS_LARGA, stdin);
+    sscanf(palabraAnadir, "%s", palabraAnadir);
+    archivo = fopen("Palabras.txt","a"); /* Abrir archivo en modo lectura */
+    char pal[strlen(palabraAnadir)];
+    strcpy(pal, palabraAnadir);
+    fprintf(archivo, "%s\n", pal);
     fclose(archivo); /* Cerrar el archivo */
     aumentarNumPalabras(archivo, 1);
 }
@@ -211,7 +272,7 @@ int conseguirNumeroPalabras(FILE* archivoNumPalabras)
 
     fgets(c,LONG_MAX_NUM_PALABRAS, archivoNumPalabras);
     sscanf(c, "%d", &num);
-    printf("El numero de palabras es: %d\n", num);
+    //printf("El numero de palabras es: %d\n", num);
 
     fclose(archivoNumPalabras);
     return num;
@@ -310,7 +371,6 @@ void borrarPalabra2(FILE* archivo) {
             i++;
         }
     }
-    
 
     
     fclose(archivo);
