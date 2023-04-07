@@ -38,7 +38,6 @@ int menu(){
                 break;
             case 4:
                 
-                
                 break;
             case 5:
                 menuGestionUsuarios();
