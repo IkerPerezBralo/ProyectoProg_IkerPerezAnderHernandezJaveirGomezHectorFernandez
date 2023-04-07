@@ -192,8 +192,7 @@ void anadirPalabra(FILE *archivo)
 {
     char palabraAnadir[PALABRA_MAS_LARGA];
     printf("Ingrese la palabra a anadir: ");
-    fgets(palabraAnadir, PALABRA_MAS_LARGA, stdin);
-    sscanf(palabraAnadir, "%s", palabraAnadir);
+    scanf("%s", palabraAnadir);
     archivo = fopen("Palabras.txt","a"); /* Abrir archivo en modo lectura */
     char pal[strlen(palabraAnadir)];
     strcpy(pal, palabraAnadir);
