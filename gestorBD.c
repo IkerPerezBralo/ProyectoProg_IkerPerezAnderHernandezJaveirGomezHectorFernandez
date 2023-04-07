@@ -1,8 +1,9 @@
 #include <string.h>
 #include "sqlite3.h"
 #include "md5.h"
-#include "gestorBD.h"
 #include "usuario.h"
+#include "gestorBD.h"
+
 
 sqlite3 *abrirConexion()
 {
@@ -38,8 +39,8 @@ int insertarUsuario(char *usuario, char *pass)
         sqlite3_close(db);
         return -1;
     }
-    sqlite3_bind_text(preparedstmt,1,usuario, strlen(usuario) + 1, 0);
-    sqlite3_bind_text(preparedstmt,2,hashPass, strlen(hashPass) + 1, 0);
+    sqlite3_bind_text(preparedstmt,1,usuario, -1, 0);
+    sqlite3_bind_text(preparedstmt,2,hashPass, -1, 0);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
         printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
@@ -120,9 +121,13 @@ int deleteUser(int userID){
         sqlite3_close(db);
         return -2;
     }
+    int returnVal = 1;
+    if(sqlite3_total_changes(db)<1){
+        returnVal=-2;
+    }
     sqlite3_finalize(preparedstmt);
     sqlite3_close(db);
-    return 1;
+    return returnVal;
 }
 
 /*
@@ -166,7 +171,7 @@ Output
     -Número de usuarios devueltos
     -Devuelve -1 si hay un error en el prepared statement
 */
-int listarUsuarios(Usuario* outUsers){
+int listarUsuariosBD(Usuario* outUsers){
     sqlite3 *db = abrirConexion();
     sqlite3_stmt *preparedstmt;
     char *query ="SELECT count(*) FROM Usuarios;";
@@ -190,19 +195,66 @@ int listarUsuarios(Usuario* outUsers){
         return numUsers;
     }
     outUsers = (Usuario*)malloc(sizeof(Usuario)*numUsers); 
-    char *query ="SELECT id,usuario FROM Usuarios;";
+    query ="SELECT id,usuario FROM Usuarios;";
     if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
     {
         printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
         return -1;
     }
-    for(int i =0;qlite3_step(preparedstmt) != SQLITE_ROW;i++){
+    for(int i =0;sqlite3_step(preparedstmt) != SQLITE_ROW;i++){
         outUsers[i].id=sqlite3_column_int(preparedstmt,0);
         strcpy(outUsers[i].nombre,sqlite3_column_text(preparedstmt,1));
     }
+    sqlite3_finalize(preparedstmt);
+    sqlite3_close(db);
     return numUsers;
 }
 
+int listarUsuariosPagina(Usuario* outUsers,int pagina){
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query ="SELECT count(*) FROM Usuarios;";
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    if (sqlite3_step(preparedstmt) != SQLITE_ROW)
+    {
+        printf("Error desconocido %s \n", sqlite3_errmsg(db));
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return -1;
+    }
+    int numUsers = sqlite3_column_int(preparedstmt,0);
+    sqlite3_finalize(preparedstmt);
+    if(numUsers==0){
+        sqlite3_close(db);
+        return -2;
+    }
+    int offset = 10 * pagina;
+    int toPrint = numUsers-offset;
+    if(toPrint<=0){
+        sqlite3_close(db);
+        return -2;
+    }
+    outUsers = (Usuario*)malloc(sizeof(Usuario)*toPrint); 
+    query = sqlite3_mprintf("SELECT id,usuario FROM Usuarios LIMIT 10 OFFSET %d;", toPrint);
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    for(int i =0;sqlite3_step(preparedstmt) != SQLITE_ROW;i++){
+        outUsers[i].id=sqlite3_column_int(preparedstmt,0);
+        strcpy(outUsers[i].nombre,sqlite3_column_text(preparedstmt,1));
+    }
+    sqlite3_finalize(preparedstmt);
+    sqlite3_close(db);
+    return numUsers;
+}
 
 

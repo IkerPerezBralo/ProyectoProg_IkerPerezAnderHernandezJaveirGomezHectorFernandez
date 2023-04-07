@@ -4,6 +4,7 @@
 #include <string.h>
 #include "sqlite3.h"
 #include <unistd.h>
+#include "gestorBD.h"
 #define PALABRA_MAS_LARGA 15
 #define NOMBRE_ARCHIVO_PALABRAS "palabras.txt"
 #define ARCHIVO_NUM_PALABRAS "numPalabras.txt"
@@ -60,15 +61,14 @@ int menuGestionUsuarios(){
         printf("2. Borrar Usuario\n");
         printf("3. Cambiar Nombre de Usuario\n");
         printf("4. Cambiar Contrasenya\n");
-        printf("5. Atras\n");
         printf("0. Salir\n");
         scanf("%d", &opcion);
         switch(opcion) {
             case 1:
-                return 1;
+                anadirUsuarioConsola();
                 break;
             case 2:
-                return 2;
+                borrarUsuarioConsola();
                 break;
             case 3:
                 return 3;
@@ -80,13 +80,54 @@ int menuGestionUsuarios(){
                 return 5;
                 break;
             case 0:
-                printf("Saliendo del sistema de administracion...\n");
+                printf("Volviendo al menu anterior\n");
                 break;
             default:
                 printf("Opcion invalida, por favor seleccione de nuevo.\n");
         }
     } while(opcion != 0);
 }
+
+void borrarUsuarioConsola(){
+    int userID;
+    printf("ID del usuario a borrar: ");
+    scanf("%d", &userID);
+    switch (deleteUser(userID))
+    {
+        case 1:
+            printf("Usuario borrado correctamente");
+            break;
+        case -1:
+            printf("Error en el prepared statement");
+            break;
+        case -2:
+            printf("No existe el usuario");
+            break;
+    }
+        
+}
+
+void anadirUsuarioConsola(){
+    char usuario[PALABRA_MAS_LARGA];
+    char contrasenya[PALABRA_MAS_LARGA];
+    printf("Nombre de usuario: ");
+    scanf("%s", usuario);
+    printf("Password: ");
+    scanf("%s", contrasenya);
+    switch (insertarUsuario(usuario, contrasenya))
+    {
+    case -1:
+        printf("Error en la BBDD");
+        break;
+    case -2:
+        printf("Error al insertar en la BBDD");
+        break;
+    default:
+        printf("Usuario insertado correctamente");
+        break;
+    }
+}
+
 void imprimir_ahorcado(int intentos) // No se si esto puede ir en administrador o solo en cliente
 {
     switch (intentos)

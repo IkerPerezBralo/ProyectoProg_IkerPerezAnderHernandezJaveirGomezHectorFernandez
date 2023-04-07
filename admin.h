@@ -19,4 +19,7 @@ int menuGestionUsuarios();
 void borrarPalabra(FILE* archivo);
 void borrarPalabra2(FILE* archivo);
 
+void anadirUsuarioConsola();
+void borrarUsuarioConsola();
+
 #endif 
