@@ -125,6 +125,14 @@ int deleteUser(int userID){
     return 1;
 }
 
+/*
+Se borra el usuio con la ID pasada en el argumento
+Input
+    userID: ID del usuario a borrar
+Output
+    -Estrucutra usuario si el código existe
+    -NULL en caso de error o no encontrar usuario
+*/
 Usuario* informacionUsuario(int userID){
     sqlite3 *db = abrirConexion();
     sqlite3_stmt *preparedstmt;
@@ -149,3 +157,52 @@ Usuario* informacionUsuario(int userID){
     sqlite3_close(db);
     return foundUser;
 }
+
+/*
+Se borra el usuio con la ID pasada en el argumento
+Input
+    -outUsers: La dirección de memoria donde se guardará el array de usuarios
+Output
+    -Número de usuarios devueltos
+    -Devuelve -1 si hay un error en el prepared statement
+*/
+int listarUsuarios(Usuario* outUsers){
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query ="SELECT count(*) FROM Usuarios;";
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    if (sqlite3_step(preparedstmt) != SQLITE_ROW)
+    {
+        printf("Error desconocido %s \n", sqlite3_errmsg(db));
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return -1;
+    }
+    int numUsers = sqlite3_column_int(preparedstmt,0);
+    sqlite3_finalize(preparedstmt);
+    if(numUsers==0){
+        sqlite3_close(db);
+        return numUsers;
+    }
+    outUsers = (Usuario*)malloc(sizeof(Usuario)*numUsers); 
+    char *query ="SELECT id,usuario FROM Usuarios;";
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    for(int i =0;qlite3_step(preparedstmt) != SQLITE_ROW;i++){
+        outUsers[i].id=sqlite3_column_int(preparedstmt,0);
+        strcpy(outUsers[i].nombre,sqlite3_column_text(preparedstmt,1));
+    }
+    return numUsers;
+}
+
+
+
