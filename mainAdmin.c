@@ -9,8 +9,14 @@ int main(void)
     //aumentarNumPalabras(archivo,3);
     //printf("%d", conseguirNumeroPalabras(archivo, 4));
     //printf("%s\n", palabraAleatoria(archivoPalabras, conseguirNumeroPalabras(archivoCantidad)));
-    borrarPalabra2(archivoPalabras);
-
+    //borrarPalabra2(archivoPalabras);
+   // menu();
+   
+    //anadirPalabra(archivoPalabras);
+    //borrarPalabra2(archivoPalabras);
+    menu();
     //opcion = menu();
+    
+
     return 0;
 }
