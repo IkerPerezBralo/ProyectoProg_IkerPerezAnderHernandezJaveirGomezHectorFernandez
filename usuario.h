@@ -6,4 +6,6 @@ typedef struct Usuario{
     char* nombre; 
 }Usuario;
 
+void imprimirUsuario(Usuario* user);
+
 #endif

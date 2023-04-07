@@ -9,6 +9,7 @@ int insertarUsuario(char *usuario, char *pass);
 int logIn(char *usuario, char *pass);
 int deleteUser(int userID);
 int listarUsuariosBD(Usuario* outUsers);
-int listarUsuariosPagina(Usuario* outUsers,int pagina);
+int listarUsuariosPagina(Usuario** outUsers,int pagina);
+int editarUsuario(int usID,char *usuario);
 
 #endif

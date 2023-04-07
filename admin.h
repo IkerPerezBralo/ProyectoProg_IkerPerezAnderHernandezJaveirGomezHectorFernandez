@@ -21,5 +21,7 @@ void borrarPalabra2(FILE* archivo);
 
 void anadirUsuarioConsola();
 void borrarUsuarioConsola();
+void listarUsuarioConsola();
+void editarUsuarioConsola();
 
 #endif 
