@@ -60,27 +60,26 @@ int menuGestionUsuarios(){
         printf("2. Borrar Usuario\n");
         printf("3. Cambiar Nombre de Usuario\n");
         printf("4. Cambiar Contrasenya\n");
-        printf("5. Atras\n");
-        printf("0. Salir\n");
+        printf("0. Atras\n");
         scanf("%d", &opcion);
         switch(opcion) {
             case 1:
-                return 1;
+                
                 break;
             case 2:
-                return 2;
+                
                 break;
             case 3:
-                return 3;
+                
                 break;
             case 4:
-                return 4;
+                
                 break;
             case 5:
-                return 5;
+               
                 break;
             case 0:
-                printf("Saliendo del sistema de administracion...\n");
+                
                 break;
             default:
                 printf("Opcion invalida, por favor seleccione de nuevo.\n");
@@ -271,45 +270,7 @@ void aumentarNumPalabras(FILE* archivoNumpalabras,int cantAaumentar)
      
 }
 
-void borrarPalabra(FILE* archivo) {
-    archivo = fopen(NOMBRE_ARCHIVO_PALABRAS, "r+");
-    FILE* archivoDeNumPalabras;
-    if (archivo == NULL) {
-        printf("No se pudo abrir el archivo.\n");
-        return;
-    }
-    
-    char palabra[PALABRA_MAS_LARGA];
-    char palabraABuscar[PALABRA_MAS_LARGA];
-    printf("Ingrese la palabra a borrar: ");
-    fgets(palabraABuscar, PALABRA_MAS_LARGA, stdin);
-    sscanf(palabraABuscar, "%s", palabraABuscar);
-    printf(palabraABuscar);
-    
-    // Buscar la palabra en el archivo y eliminarla
-    char linea[PALABRA_MAS_LARGA];
-    int contador = 1;
-    while (fgets(linea, PALABRA_MAS_LARGA, archivo) != NULL) {
-        char palabraTemp[PALABRA_MAS_LARGA];
-        sscanf(linea, "%s", palabraTemp);
-        printf(palabraTemp);
-        if (strcmp(palabraTemp, palabraABuscar) == 0) {
-            fseek(archivo, -(strlen(linea)+1), SEEK_CUR);
-            for (int i = 0; i < strlen(linea); i++) {
-                fputc(' ', archivo);
-            }
-            fclose(archivo);
-            aumentarNumPalabras(archivoDeNumPalabras, -1);
-            printf("La palabra ha sido borrada del archivo.\n");
-            return;
-        }
-        contador++;
-    }
-    
-    // Si la palabra no se encontró en el archivo, mostrar un mensaje de error
-    fclose(archivo);
-    printf("La palabra ingresada no fue encontrada en el archivo.\n");
-}
+
 
 void borrarPalabra2(FILE* archivo) {
     
@@ -328,8 +289,7 @@ void borrarPalabra2(FILE* archivo) {
     char palabraABuscar[PALABRA_MAS_LARGA];
     char c;
     printf("Ingrese la palabra a borrar: ");
-    fgets(palabraABuscar, PALABRA_MAS_LARGA, stdin);
-    sscanf(palabraABuscar, "%s", palabraABuscar);
+    scanf("%s", palabraABuscar);
     
     int i = 0;
     while((c = fgetc(archivo)) != EOF)
