@@ -24,4 +24,7 @@ void borrarUsuarioConsola();
 void listarUsuarioConsola();
 void editarUsuarioConsola();
 
+void imprimirPagina(int pagina);
+void listadoDePalabras();
+
 #endif 
