@@ -364,7 +364,7 @@ void aumentarNumPalabras(FILE *archivoNumpalabras, int cantAaumentar)
 
 void borrarPalabra2(FILE *archivo)
 {
-
+    int encontrada = -1;// Ponemos en 1 si se encuentra la palabra
     FILE *archivoDeNumPalabras;
     FILE *archivoAuxiliar;
     archivo = fopen(NOMBRE_ARCHIVO_PALABRAS, "r+");
@@ -395,7 +395,7 @@ void borrarPalabra2(FILE *archivo)
             }
             else
             {
-                printf("Eliminada con exito.\n");
+                encontrada = 1;
                 aumentarNumPalabras(archivoDeNumPalabras, -1);
             }
             i = 0;
@@ -408,6 +408,13 @@ void borrarPalabra2(FILE *archivo)
         }
     }
 
+    if(encontrada == 1)
+    {
+        printf("Eliminada con exito.\n");
+    }else
+    {
+        printf("No se ha encontrado la palabra.\n");
+    }
     fclose(archivo);
     fclose(archivoAuxiliar);
     remove(NOMBRE_ARCHIVO_PALABRAS);
