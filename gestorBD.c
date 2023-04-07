@@ -2,6 +2,7 @@
 #include "sqlite3.h"
 #include "md5.h"
 #include "gestorBD.h"
+#include "usuario.h"
 
 sqlite3 *abrirConexion()
 {
@@ -122,4 +123,29 @@ int deleteUser(int userID){
     sqlite3_finalize(preparedstmt);
     sqlite3_close(db);
     return 1;
+}
+
+Usuario* informacionUsuario(int userID){
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query = sqlite3_mprintf("SELECT usuario FROM Usuarios WHERE id=%d;", userID);
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return NULL;
+    }
+    if (sqlite3_step(preparedstmt) != SQLITE_ROW)
+    {
+        printf("No se ha encontrado ningun usuario con el id %d \n", userID);
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return NULL;
+    }
+    Usuario* foundUser = (Usuario*) malloc(sizeof(Usuario));
+    foundUser->id = userID;
+    strcpy(foundUser->nombre,sqlite3_column_text(preparedstmt,0));
+    sqlite3_finalize(preparedstmt);
+    sqlite3_close(db);
+    return foundUser;
 }
