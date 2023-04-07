@@ -4,6 +4,7 @@
 #include <string.h>
 #include "sqlite3.h"
 #include <unistd.h>
+#include "gestorBD.h"
 #define PALABRA_MAS_LARGA 15
 #define NOMBRE_ARCHIVO_PALABRAS "palabras.txt"
 #define ARCHIVO_NUM_PALABRAS "numPalabras.txt"
@@ -19,7 +20,7 @@ int menu(){
         printf("1. Iniciar partida (mantenimiento)\n");
         printf("2. Insertar palabra\n");
         printf("3. Borrar palabra\n");
-        printf("4. Navegar lista de palabras\n");
+        printf("4. Imprimir lista de palabras\n");
         printf("5. Gestion de usuarios\n");
         printf("0. Salir\n");
         scanf("%d", &opcion);
@@ -36,6 +37,7 @@ int menu(){
                 
                 break;
             case 4:
+                
                 
                 break;
             case 5:
