@@ -13,6 +13,7 @@
 
 int menu()
 {
+    char str[PALABRA_MAS_LARGA];
     int opcion;
     FILE *archivoPalabras;
     FILE *archivoNumeroPalabras;
@@ -26,13 +27,16 @@ int menu()
         printf("4. Navegar por la lista de palabras\n");
         printf("5. Gestion de usuarios\n");
         printf("0. Salir\n");
-        scanf("%d", &opcion);
+        fgets(str, PALABRA_MAS_LARGA, stdin);
+        sscanf(str, "%d", &opcion);
+        fflush(stdin);
 
         switch(opcion) {
             case 1:
                 
                 break;
             case 2:
+            fflush(stdin);
                 anadirPalabra(archivoPalabras);
                 
                 break;
@@ -59,6 +63,7 @@ int menu()
 
 int menuGestionUsuarios()
 {
+    char str[PALABRA_MAS_LARGA];
     int opcion;
     printf("\nSistema de Gestion de Usuarios de Ahorcado - The Game.\n");
     do
@@ -70,7 +75,9 @@ int menuGestionUsuarios()
         printf("4. Cambiar Contrasenya\n");
         printf("5. Listar usuarios\n");
         printf("0. Salir\n");
-        scanf("%d", &opcion);
+        fgets(str, PALABRA_MAS_LARGA, stdin);
+        sscanf(str,"%d", &opcion);
+        fflush(stdin);
         switch (opcion)
         {
         case 1:
@@ -96,16 +103,20 @@ int menuGestionUsuarios()
         }
 
     } while (opcion != 0);
+
 }
 
 void editarUsuarioConsola(){
+    char str[PALABRA_MAS_LARGA];
     int userID;
     char usuario[PALABRA_MAS_LARGA];
     printf("ID del usuario a editar: ");
-    scanf("%d", &userID);
-    
+    fgets(str, PALABRA_MAS_LARGA, stdin);
+    sscanf(str,"%d", &userID);
+    fflush(stdin);
     printf("Nuevo nombre de usuario: ");
-    scanf("%s", usuario);
+    fgets(str, PALABRA_MAS_LARGA, stdin);
+    fflush(stdin);
     
     switch (editarUsuario(userID,usuario))
     {
@@ -123,6 +134,7 @@ void editarUsuarioConsola(){
 
 void listarUsuarioConsola()
 {
+    char str[PALABRA_MAS_LARGA];
     int currentPage = 0;
     int opcion;
     Usuario *listaUsuarios=NULL;
@@ -145,7 +157,9 @@ void listarUsuarioConsola()
         }
 
         printf("\n0. Salir\n1. Siguiente\n2. Anterior");
-        scanf("%d", &opcion);
+        fgets(str, PALABRA_MAS_LARGA, stdin);
+        sscanf(str,"%d", &opcion);
+        fflush(stdin);
         switch (opcion)
         {
         case 1:
@@ -169,9 +183,12 @@ void listarUsuarioConsola()
 
 void borrarUsuarioConsola()
 {
+    char str[PALABRA_MAS_LARGA];
     int userID;
     printf("ID del usuario a borrar: ");
-    scanf("%d", &userID);
+    fgets(str, PALABRA_MAS_LARGA, stdin);
+    sscanf(str, "%d", &userID);
+    fflush(stdin);
     switch (deleteUser(userID))
     {
     case 1:
@@ -191,9 +208,11 @@ void anadirUsuarioConsola()
     char usuario[PALABRA_MAS_LARGA];
     char contrasenya[PALABRA_MAS_LARGA];
     printf("Nombre de usuario: ");
-    scanf("%s", usuario);
+    fgets(usuario, PALABRA_MAS_LARGA, stdin);
+    fflush(stdin);
     printf("Password: ");
-    scanf("%s", contrasenya);
+    fgets(contrasenya, PALABRA_MAS_LARGA, stdin);
+    fflush(stdin);
     switch (insertarUsuario(usuario, contrasenya))
     {
     case -1:
@@ -287,13 +306,15 @@ void anadirPalabra(FILE *archivo)
 {
     char palabraAnadir[PALABRA_MAS_LARGA];
     printf("Ingrese la palabra a anadir: ");
-    scanf("%s", palabraAnadir);
+
+    fgets(palabraAnadir, PALABRA_MAS_LARGA, stdin);
     archivo = fopen("Palabras.txt", "a"); /* Abrir archivo en modo lectura */
     char pal[strlen(palabraAnadir)];
     strcpy(pal, palabraAnadir);
     fprintf(archivo, "%s\n", pal);
     fclose(archivo); /* Cerrar el archivo */
     aumentarNumPalabras(archivo, 1);
+    fflush(stdin);
 }
 
 void establecerMaxIntentos(int *numEstablecido, int nuevoNumero)
@@ -380,7 +401,9 @@ void borrarPalabra2(FILE *archivo)
     char palabraABuscar[PALABRA_MAS_LARGA];
     char c;
     printf("Ingrese la palabra a borrar: ");
-    scanf("%s", palabraABuscar);
+    fgets(palabraABuscar, PALABRA_MAS_LARGA, stdin);
+    sscanf(palabraABuscar, "%s", &palabraABuscar);
+    fflush(stdin);
 
     int i = 0;
     while ((c = fgetc(archivo)) != EOF)
@@ -390,7 +413,6 @@ void borrarPalabra2(FILE *archivo)
             palabra[i] = '\0'; // Señala el final de la palabra cuando encuentra el final de la linea
             if (strcmp(palabra, palabraABuscar) != 0)
             {
-
                 fprintf(archivoAuxiliar, "%s\n", palabra);
             }
             else
@@ -453,7 +475,7 @@ void borrarPalabra2(FILE *archivo)
         }
 
     }
-        printf("\n");
+    printf("\n");
     fclose(f);    
     
 }
@@ -466,6 +488,7 @@ void borrarPalabra2(FILE *archivo)
     void listadoDePalabras()
     {
         FILE* archivo;
+         char str[PALABRA_MAS_LARGA];
          int opcion;
          int numPagina = 0;
          int pagMax = (conseguirNumeroPalabras(archivo) / 10); 
@@ -487,7 +510,9 @@ void borrarPalabra2(FILE *archivo)
         }
          
         printf("0. Volver al menu\n");
-        scanf("%d", &opcion);
+        fgets(str, PALABRA_MAS_LARGA, stdin);
+        sscanf(str, "%d", &opcion);
+        fflush(stdin);
         switch(opcion) {
             case 1:
                 if(numPagina > 0){
