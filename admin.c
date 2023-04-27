@@ -311,7 +311,7 @@ void anadirPalabra(FILE *archivo)
     archivo = fopen("Palabras.txt", "a"); /* Abrir archivo en modo lectura */
     char pal[strlen(palabraAnadir)];
     strcpy(pal, palabraAnadir);
-    fprintf(archivo, "%s\n", pal);
+    fprintf(archivo, "%s", pal);
     fclose(archivo); /* Cerrar el archivo */
     aumentarNumPalabras(archivo, 1);
     fflush(stdin);
