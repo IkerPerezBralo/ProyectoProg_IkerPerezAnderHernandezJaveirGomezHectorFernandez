@@ -4,6 +4,10 @@
 class consultaUsuario {
 public:
     void iniciar();
+    void menuUsuario();
+    void historial();
+    void crearPartida();
+    void unirtePartida();
 };
 
 #endif
