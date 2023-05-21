@@ -23,7 +23,7 @@ void consultaUsuario::iniciar() {
             cout << "Interfaz de registrar usuario" << endl;
             respuestaValida = true;
         } else {
-            cout << "Respuesta inválida. Por favor, introduce 's' o 'n'." << endl;
+            cout << "Respuesta invalida. Por favor, introduce 's' o 'n'." << endl;
         }
     }
     menuUsuario();
@@ -90,7 +90,7 @@ void consultaUsuario::crearPartida()
     // CONSEGUIR HACER QUE ESPERA A QUE SE UNA ALGUIEN
     cout << "ESPERANDO..." << endl;
     char respuesta;
-    cout << "¿Desea empezar la partida? (s/n): ";
+    cout << "Desea empezar la partida? (s/n): ";
     cin >> respuesta;
 
     if (respuesta == 's' || respuesta == 'S') {
@@ -204,13 +204,46 @@ void consultaUsuario::jugarAhorcado()
         while (intentosRestantes > 0 && !todasLetrasAdivinadas(letrasAdivinadas))
         {
             cout << "Intentos restantes: " << intentosRestantes << endl;
+            cout << "Palabra: ";
             imprimirPalabra(palabra, letrasAdivinadas);
+            cout << endl;
 
-            cout << "Ingresa una letra o la palabra: ";
-            char letra;
-            cin >> letra;
+            char opcion;
+            cout << "Deseas adivinar una letra (L) o la palabra completa (P)? ";
+            cin >> opcion;
 
-            procesarLetra(letra, palabra, letrasAdivinadas, intentosRestantes);
+            if (opcion == 'L' || opcion == 'l')
+            {
+                char letra;
+                cout << "Ingresa una letra: ";
+                cin >> letra;
+
+                procesarLetra(letra, palabra, letrasAdivinadas, intentosRestantes);
+            }
+            else if (opcion == 'P' || opcion == 'p')
+            {
+                string palabraAdivinada;
+                cout << "Ingresa la palabra completa: ";
+                cin >> palabraAdivinada;
+
+                if (palabraAdivinada == palabra)
+                {
+                    for (size_t i = 0; i < letrasAdivinadas.size(); i++)
+                    {
+                        letrasAdivinadas[i] = true;
+                    }
+                    break;
+                }
+                else
+                {
+                    cout << "Palabra incorrecta. Pierdes un intento." << endl;
+                    intentosRestantes--;
+                }
+            }
+            else
+            {
+                cout << "Opcion invalida. Por favor, elige 'L' para adivinar una letra o 'P' para adivinar la palabra completa." << endl;
+            }
         }
 
         if (todasLetrasAdivinadas(letrasAdivinadas))
