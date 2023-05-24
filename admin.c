@@ -283,17 +283,20 @@ void imprimir_ahorcado(int intentos) // No se si esto puede ir en administrador 
     }
 }
 
-void anadirPalabra(FILE *archivo)
+void anadirPalabra()
 {
     char palabraAnadir[PALABRA_MAS_LARGA];
-    printf("Ingrese la palabra a anadir: ");
+    printf("Ingrese la palabra a anadir: \n");
     scanf("%s", palabraAnadir);
-    archivo = fopen("Palabras.txt", "a"); /* Abrir archivo en modo lectura */
-    char pal[strlen(palabraAnadir)];
-    strcpy(pal, palabraAnadir);
-    fprintf(archivo, "%s\n", pal);
-    fclose(archivo); /* Cerrar el archivo */
-    aumentarNumPalabras(archivo, 1);
+    switch (insertarPalabra(palabraAnadir))
+    {
+    case 1:
+        printf("Palabra insertada\n");
+        break;
+    
+    default:
+        printf("No se ha insertado ninguna palabra\n");
+    }
 }
 
 void establecerMaxIntentos(int *numEstablecido, int nuevoNumero)
@@ -337,18 +340,9 @@ char *palabraAleatoria(FILE *archivo, int numPalabras)
     return NULL;
 }
 
-int conseguirNumeroPalabras(FILE *archivoNumPalabras)
+int conseguirNumeroPalabras()
 {
-    char c[LONG_MAX_NUM_PALABRAS];
-    int num;
-    archivoNumPalabras = fopen(ARCHIVO_NUM_PALABRAS, "r");
-
-    fgets(c, LONG_MAX_NUM_PALABRAS, archivoNumPalabras);
-    sscanf(c, "%d", &num);
-    // printf("El numero de palabras es: %d\n", num);
-
-    fclose(archivoNumPalabras);
-    return num;
+    return totalPalabras();
 }
 void aumentarNumPalabras(FILE *archivoNumpalabras, int cantAaumentar)
 {
@@ -362,64 +356,19 @@ void aumentarNumPalabras(FILE *archivoNumpalabras, int cantAaumentar)
     fclose(archivoNumpalabras);
 }
 
-void borrarPalabra2(FILE *archivo)
+void borrarPalabra2()
 {
-    int encontrada = -1;// Ponemos en 1 si se encuentra la palabra
-    FILE *archivoDeNumPalabras;
-    FILE *archivoAuxiliar;
-    archivo = fopen(NOMBRE_ARCHIVO_PALABRAS, "r+");
-    archivoAuxiliar = fopen("temp.txt", "w");
-
-    if (archivo == NULL || archivoAuxiliar == NULL)
-    {
-        printf("No se pudo abrir el archivo.\n");
-        return;
-    }
-
     char palabra[PALABRA_MAS_LARGA + 3]; // El más 3 es para evitar problemas de que haya algun caracter extra
     char palabraABuscar[PALABRA_MAS_LARGA];
-    char c;
-    printf("Ingrese la palabra a borrar: ");
+    printf("Ingrese la palabra a borrar: \n");
     scanf("%s", palabraABuscar);
-
-    int i = 0;
-    while ((c = fgetc(archivo)) != EOF)
-    {
-        if (c == ' ' || c == '\n')
-        {
-            palabra[i] = '\0'; // Señala el final de la palabra cuando encuentra el final de la linea
-            if (strcmp(palabra, palabraABuscar) != 0)
-            {
-
-                fprintf(archivoAuxiliar, "%s\n", palabra);
-            }
-            else
-            {
-                encontrada = 1;
-                aumentarNumPalabras(archivoDeNumPalabras, -1);
-            }
-            i = 0;
-        }
-        else
-        {
-
-            palabra[i] = c;
-            i++;
-        }
+    
+    if(borrarPalabraBD(palabraABuscar)>0){
+        printf("Palabra borrado\n");
+    } else {
+        printf("No existe esa palabra\n");
     }
-
-    if(encontrada == 1)
-    {
-        printf("Eliminada con exito.\n");
-    }else
-    {
-        printf("No se ha encontrado la palabra.\n");
-    }
-    fclose(archivo);
-    fclose(archivoAuxiliar);
-    remove(NOMBRE_ARCHIVO_PALABRAS);
-    rename("temp.txt",NOMBRE_ARCHIVO_PALABRAS);
-    }
+}
 
 
 

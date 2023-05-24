@@ -5,19 +5,19 @@
 #include <time.h>
 
 void imprimir_ahorcado(int num_intento);
-void anadirPalabra(FILE *archivo);
+void anadirPalabra();
 char* cargarPalabrasFichero(FILE* archivo, char* palabras);
 void cargarPalabrasBases(); // BASES DE DATOS -- Por implementar
 
 void establecerMaxIntentos(int *numEstablecido, int nuevoNumero);
 char* palabraAleatoria(FILE* archivo,  int numPalabras);
-int conseguirNumeroPalabras(FILE* archivoNumPalabras);
+int conseguirNumeroPalabras();
 void aumentarNumPalabras(FILE* archivoNumpalabras,int cantAaumentar);
 
 int menu();
 int menuGestionUsuarios();
 
-void borrarPalabra2(FILE* archivo);
+void borrarPalabra2();
 
 void anadirUsuarioConsola();
 void borrarUsuarioConsola();
