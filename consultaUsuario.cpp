@@ -40,10 +40,10 @@ void consultaUsuario::registrar()
     char* usuario;
     char* contrasenya;
 
-    cout << "Ingrese el usuario: ";
+    cout << "Ingrese el nombre de usuario que desee: ";
     cin >> usuario;
 
-    cout << "Ingrese la contrasenya: ";
+    cout << "Ingrese su contrasenya: ";
     cin >> contrasenya;
 
     insertarUsuario(usuario, contrasenya);
