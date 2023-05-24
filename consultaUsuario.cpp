@@ -6,6 +6,10 @@
 #include <cstdlib>
 #include "consultaUsuario.h"
 
+extern "C"{
+    #include "gestorBD.h"
+}
+
 using namespace std;
 
 void consultaUsuario::iniciar() {
@@ -18,15 +22,31 @@ void consultaUsuario::iniciar() {
 
         if (respuesta == 's' || respuesta == 'S') {
             cout << "Interfaz de iniciar usuario" << endl;
+
             respuestaValida = true;
         } else if (respuesta == 'n' || respuesta == 'N') {
             cout << "Interfaz de registrar usuario" << endl;
+            registrar();
             respuestaValida = true;
         } else {
             cout << "Respuesta invalida. Por favor, introduce 's' o 'n'." << endl;
         }
     }
     menuUsuario();
+}
+
+void consultaUsuario::registrar()
+{
+    char* usuario;
+    char* contrasenya;
+
+    cout << "Ingrese el usuario: ";
+    cin >> usuario;
+
+    cout << "Ingrese la contrasenya: ";
+    cin >> contrasenya;
+
+    insertarUsuario(usuario, contrasenya);
 }
 
 void consultaUsuario::menuUsuario()

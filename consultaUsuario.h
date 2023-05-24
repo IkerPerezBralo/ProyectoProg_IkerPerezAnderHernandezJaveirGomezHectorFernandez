@@ -8,6 +8,8 @@ using namespace std;
 class consultaUsuario {
 public:
     void iniciar();
+    void registrar();
+    void logIn();
     void menuUsuario();
     void historial();
     void crearPartida();
