@@ -118,10 +118,7 @@ void consultaUsuario::crearPartida()
         cout << "Iniciando partida..." << endl;
         CCM.initializeConnection();
         CCM.initializeSocket();
-        Usuario us1;
-        us1.id = 1234;
-        us1.nombre = "patata";
-        CCM.connectToServer(us1);
+        CCM.connectToServer();
         jugarAhorcado();
     } else {
         cout << "Esperando a que alguien inicie la partida..." << endl;
