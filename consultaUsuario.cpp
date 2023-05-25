@@ -132,7 +132,7 @@ void consultaUsuario::unirtePartida()
 vector<string> consultaUsuario::cargarPalabras()
 {
     vector<string> palabras;
-    ifstream archivo("palabras.txt");
+    ifstream archivo("baseDeDatos/palabras.txt");
     string palabra;
 
     if (archivo.is_open())
