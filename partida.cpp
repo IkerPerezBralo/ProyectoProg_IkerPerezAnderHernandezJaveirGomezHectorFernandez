@@ -1,11 +1,13 @@
 #include "partida.h"
+#include<string>
 #include<string.h>
+#include<ctype.h>
 
 extern "C"{
     #include "gestorBD.h"
 }
 
-Partida::Partida(){
+Partida::Partida(int user1id){
     palabraElegida = palabraRandom();
     int longitud = strlen(palabraElegida);
     progresoPalabra = new char[longitud+1];
@@ -16,11 +18,37 @@ Partida::Partida(){
             progresoPalabra[i] = '\0';
         }
     }
-    siguiente=1;
-    //TODO Crear partida en BD y conseguir id
+    turno=1;
+    usuario1=informacionUsuario(user1id);
+    usuario2=NULL;
+    id= crearPartida(user1id,palabraElegida);
 }
 
 Partida::~Partida(){
-    delete palabraElegida;
-    delete progresoPalabra;
+    delete[] palabraElegida;
+    delete[] progresoPalabra;
+    delete usuario1;
+    delete usuario2;
 }
+
+int Partida::comprobarLetra(char letra){
+    letra = toupper(letra);
+    int encontradas=0;
+    for(int i=0;palabraElegida[i]!='\0';i++){
+        if(palabraElegida[i]==letra){
+            progresoPalabra[i]=letra;
+            encontradas++;
+        }
+    }
+    std::string mensaje ="";
+    if(turno==1){
+        mensaje+= usuario1->nombre;
+        
+    }else {
+        mensaje+= usuario2->nombre;
+    }
+    mensaje+= " ha intentado adivinar la letra " + letra;
+    mensaje+=  " y se han encontrado" + std::to_string(encontradas);
+    escribirHistorial(id,mensaje.c_str());
+    return encontradas;
+};

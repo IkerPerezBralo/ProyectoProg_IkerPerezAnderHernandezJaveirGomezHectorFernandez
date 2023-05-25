@@ -20,5 +20,7 @@ int borrarPalabraBD(char* palabra);
 char* palabraRandom();
 int totalPalabras();
 int exportarTodasPalabras(char* path);
+int crearPartida(int usuarioid,char* palabra);
+void escribirHistorial(int partID,const char* texto);
 
 #endif
