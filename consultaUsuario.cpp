@@ -118,7 +118,10 @@ void consultaUsuario::crearPartida()
         cout << "Iniciando partida..." << endl;
         CCM.initializeConnection();
         CCM.initializeSocket();
-        CCM.connectToServer();
+        Usuario us1;
+        us1.id = 1234;
+        us1.nombre = "patata";
+        CCM.connectToServer(us1);
         jugarAhorcado();
     } else {
         cout << "Esperando a que alguien inicie la partida..." << endl;
@@ -242,7 +245,7 @@ void consultaUsuario::jugarAhorcado()
                 char letra;
                 cout << "Ingresa una letra: ";
                 cin >> letra;
-                char cadena[2];
+                char cadena[4];
                 cadena[0] = letra;
                 cadena[1] = '\0';
                 char* puntero_cadena = cadena;
@@ -255,6 +258,9 @@ void consultaUsuario::jugarAhorcado()
                 string palabraAdivinada;
                 cout << "Ingresa la palabra completa: ";
                 cin >> palabraAdivinada;
+                char* palabraAdivinadaChar = new char[palabraAdivinada.length() + 1];
+                strcpy(palabraAdivinadaChar, palabraAdivinada.c_str());
+                CCM.sendData(2, palabraAdivinadaChar);
 
                 if (palabraAdivinada == palabra)
                 {

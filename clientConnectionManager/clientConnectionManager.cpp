@@ -3,6 +3,9 @@
 
 #include <iostream>
 using namespace std;
+#ifndef USUARIO_H_
+
+#endif
 
 clientConnectionManager::clientConnectionManager()
 {
@@ -10,7 +13,7 @@ clientConnectionManager::clientConnectionManager()
 }
 clientConnectionManager::~clientConnectionManager()
 {
-
+    
 }
 
 
@@ -54,12 +57,12 @@ int clientConnectionManager::connectToServer()
 
 	printf("Connection stablished with: %s (%d)\n", inet_ntoa(server.sin_addr),
 			ntohs(server.sin_port));
+    
     return 0;
 }
 int clientConnectionManager::sendData(int type, char* data)
 {
-  cout<<"patata: "<<data<<endl;
-    strcpy(sendBuff, data);
+    sprintf(sendBuff, "%d-%s", type, data);
     send(s, sendBuff, sizeof(sendBuff), 0);
     cout<<sendBuff<<endl; 
    

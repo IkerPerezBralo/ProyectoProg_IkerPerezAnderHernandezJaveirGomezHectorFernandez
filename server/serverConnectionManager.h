@@ -16,6 +16,9 @@ private:
 	struct sockaddr_in client;
 	char sendBuff[512], recvBuff[512];
 public:
+
+   
+
     serverConnectionManager();
     ~serverConnectionManager();
     int initializeServer();
