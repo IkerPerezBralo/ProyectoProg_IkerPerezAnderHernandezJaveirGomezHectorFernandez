@@ -146,7 +146,7 @@ int deleteUser(int userID){
     }
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
-        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        printf("Error al ejecutar el delete : %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(preparedstmt);
         sqlite3_close(db);
         return -2;
@@ -302,4 +302,141 @@ int listarUsuariosPagina(Usuario** outUsers,int pagina){
     return toPrint;
 }
 
+int clearTablaPalabra(){
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query = sqlite3_mprintf("DELETE FROM palabra WHERE 1;");
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    if (sqlite3_step(preparedstmt) != SQLITE_DONE)
+    {
+        printf("Error al ejecutar el DELETE : %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return -2;
+    }
+    sqlite3_finalize(preparedstmt);
+    sqlite3_close(db);
+    return 1;
+}
+
+int insertarPalabra(char* palabra){
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query = sqlite3_mprintf("INSERT INTO palabra(palabra) VALUES (UPPER(?));");
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    sqlite3_bind_text(preparedstmt,1,palabra, -1, 0);
+    if (sqlite3_step(preparedstmt) != SQLITE_DONE)
+    {
+        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return -2;
+    }
+    sqlite3_finalize(preparedstmt);
+    sqlite3_close(db);
+    return 1;
+}
+int borrarPalabraBD(char* palabra){
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query = sqlite3_mprintf("DELETE FROM palabra WHERE palabra=UPPER(?);");
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    sqlite3_bind_text(preparedstmt,1,palabra, -1, 0);
+    if (sqlite3_step(preparedstmt) != SQLITE_DONE)
+    {
+        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return -2;
+    }
+    
+    sqlite3_finalize(preparedstmt);
+    int borrado = sqlite3_changes(db);
+    sqlite3_close(db);
+    return borrado;
+}
+
+char* palabraRandom(){
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query ="SELECT * FROM palabra ORDER BY RANDOM() LIMIT 1;";
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return NULL;
+    }
+    if (sqlite3_step(preparedstmt) != SQLITE_ROW)
+    {
+        printf("Error desconocido %s \n", sqlite3_errmsg(db));
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return NULL;
+    }
+    char* returnPalabra = (char*)sqlite3_column_text(preparedstmt,0);
+    sqlite3_finalize(preparedstmt);
+    sqlite3_close(db);
+    return returnPalabra;
+}
+
+int totalPalabras(){
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query ="SELECT COUNT(*) FROM palabra;";
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    if (sqlite3_step(preparedstmt) != SQLITE_ROW)
+    {
+        printf("Error desconocido %s \n", sqlite3_errmsg(db));
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return -1;
+    }
+    int total = sqlite3_column_int(preparedstmt,0);
+    sqlite3_finalize(preparedstmt);
+    sqlite3_close(db);
+    return total;
+
+}
+
+int exportarTodasPalabras(char* path){
+    FILE* outputfile;
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query ="SELECT palabra FROM palabra ORDER BY palabra;";
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    outputfile = fopen(path,"w");
+    while (sqlite3_step(preparedstmt) == SQLITE_ROW)
+    {
+        fprintf(outputfile,"%s\n",sqlite3_column_text(preparedstmt,0));
+    }
+    fclose(outputfile);
+    sqlite3_finalize(preparedstmt);
+    sqlite3_close(db);
+    return 1;  
+}
 
