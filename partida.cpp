@@ -4,7 +4,7 @@
 #include<ctype.h>
 
 extern "C"{
-    #include "gestorBD.h"
+    #include "baseDeDatos/gestorBD.h"
 }
 
 Partida::Partida(int user1id){

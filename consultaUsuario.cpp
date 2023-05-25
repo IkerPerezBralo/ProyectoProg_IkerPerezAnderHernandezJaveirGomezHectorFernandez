@@ -7,7 +7,7 @@
 #include "consultaUsuario.h"
 
 extern "C"{
-    #include "gestorBD.h"
+    #include "baseDeDatos/gestorBD.h"
 }
 
 using namespace std;
