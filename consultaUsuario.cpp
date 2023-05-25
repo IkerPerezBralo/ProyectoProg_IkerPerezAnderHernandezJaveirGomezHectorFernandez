@@ -37,8 +37,8 @@ void consultaUsuario::iniciar() {
 
 void consultaUsuario::registrar()
 {
-    char* usuario;
-    char* contrasenya;
+    char usuario[50];
+    char contrasenya[50];
 
     cout << "Ingrese el nombre de usuario que desee: ";
     cin >> usuario;
