@@ -418,3 +418,25 @@ int totalPalabras(){
 
 }
 
+int exportarTodasPalabras(char* path){
+    FILE* outputfile;
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query ="SELECT palabra FROM palabra ORDER BY palabra;";
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    outputfile = fopen(path,"w");
+    while (sqlite3_step(preparedstmt) == SQLITE_ROW)
+    {
+        fprintf(outputfile,"%s\n",sqlite3_column_text(preparedstmt,0));
+    }
+    fclose(outputfile);
+    sqlite3_finalize(preparedstmt);
+    sqlite3_close(db);
+    return 1;  
+}
+

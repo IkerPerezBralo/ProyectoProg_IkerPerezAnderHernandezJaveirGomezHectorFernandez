@@ -8,6 +8,7 @@
 #include "gestorBD.h"
 #define PALABRA_MAS_LARGA 15
 #define NOMBRE_ARCHIVO_PALABRAS "palabras.txt"
+#define NOMBRE_ARCHIVO_OUTPUT "output.txt"
 #define ARCHIVO_NUM_PALABRAS "numPalabras.txt"
 #define LONG_MAX_NUM_PALABRAS 4 // Longitud maxima del numero que representa el numero de palabras en el fichero
 
@@ -21,11 +22,12 @@ int menu()
     do
     {
         printf("\nSeleccione una opcion:\n");
-        printf("1. Iniciar partida (mantenimiento)\n");
-        printf("2. Insertar palabra\n");
-        printf("3. Borrar palabra\n");
-        printf("4. Navegar por la lista de palabras\n");
-        printf("5. Gestion de usuarios\n");
+        printf("1. Insertar palabras desde palabras.txt\n");
+        printf("2. Exportar palabras a output.txt\n");
+        printf("3. Insertar palabra\n");
+        printf("4. Borrar palabra\n");
+        printf("5. Navegar por la lista de palabras\n");
+        printf("6. Gestion de usuarios\n");
         printf("0. Salir\n");
         fgets(str, PALABRA_MAS_LARGA, stdin);
         sscanf(str, "%d", &opcion);
@@ -34,24 +36,26 @@ int menu()
         switch (opcion)
         {
         case 1:
-
+            leerDesdeArchivo();
             break;
         case 2:
+            exportarPalabras();
+            break;
+        case 3:
             fflush(stdin);
             anadirPalabra(archivoPalabras);
 
             break;
-        case 3:
+        case 4:
             borrarPalabra2(archivoPalabras);
 
             break;
-        case 4:
+        case 5:
             listadoDePalabras();
 
             break;
-        case 5:
+        case 6:
             menuGestionUsuarios();
-
             break;
         case 0:
             printf("Saliendo del sistema de administracion...\n");
@@ -305,6 +309,41 @@ void imprimir_ahorcado(int intentos) // No se si esto puede ir en administrador 
         printf("      |\n");
         printf("=========\n");
         break;
+    }
+}
+
+void leerDesdeArchivo(){
+    FILE* archivoaLeer;
+    char palabraAnadir[PALABRA_MAS_LARGA];
+    char palabra[PALABRA_MAS_LARGA];
+    char c;
+    int contadorPalabras = 0;
+    int i = 0;
+    clearTablaPalabra();
+    archivoaLeer = fopen(NOMBRE_ARCHIVO_PALABRAS,"r");
+    while ((c = fgetc(archivoaLeer)) != EOF)
+    {
+        if (c == ' ' || c == '\n')
+        {
+            contadorPalabras++;
+            palabraAnadir[i]='\0';
+            insertarPalabra(palabraAnadir);
+            i=0;
+        }else {
+            palabraAnadir[i]=c;
+            i++;
+        }
+    }
+    fclose(archivoaLeer);
+    printf("Importado correcto \n");
+
+}
+
+void exportarPalabras(){
+    if(exportarTodasPalabras(NOMBRE_ARCHIVO_OUTPUT)==1){
+        printf("Exportado correctamente");
+    } else {
+        printf("Error al exportar");
     }
 }
 

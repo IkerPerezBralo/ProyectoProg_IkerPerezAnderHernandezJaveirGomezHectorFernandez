@@ -19,5 +19,6 @@ int insertarPalabra(char* palabra);
 int borrarPalabraBD(char* palabra);
 char* palabraRandom();
 int totalPalabras();
+int exportarTodasPalabras(char* path);
 
 #endif

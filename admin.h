@@ -19,6 +19,9 @@ int menuGestionUsuarios();
 
 void borrarPalabra2();
 
+void leerDesdeArchivo();
+void exportarPalabras();
+
 void anadirUsuarioConsola();
 void borrarUsuarioConsola();
 void listarUsuarioConsola();
