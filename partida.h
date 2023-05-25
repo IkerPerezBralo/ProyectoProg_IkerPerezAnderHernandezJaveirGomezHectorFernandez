@@ -24,6 +24,7 @@ class Partida{
 
         int comprobarLetra(char letra);
         int comprobarPalabra(char* palabra);
+        void setUsuario2(int user2id);
 };
 
 #endif

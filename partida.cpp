@@ -22,6 +22,9 @@ Partida::Partida(int user1id){
     usuario1=informacionUsuario(user1id);
     usuario2=NULL;
     id= crearPartida(user1id,palabraElegida);
+    std::string mensaje = usuario2->nombre;
+    mensaje += " ha creado una partida.";
+    escribirHistorial(id,mensaje.c_str());
 }
 
 Partida::~Partida(){
@@ -52,3 +55,10 @@ int Partida::comprobarLetra(char letra){
     escribirHistorial(id,mensaje.c_str());
     return encontradas;
 };
+
+void Partida::setUsuario2(int user2id){
+    usuario2=informacionUsuario(user2id);
+    std::string mensaje = usuario2->nombre;
+    mensaje += " se ha unido a la partida.";
+    escribirHistorial(id,mensaje.c_str());
+}
