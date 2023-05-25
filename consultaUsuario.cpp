@@ -15,6 +15,7 @@ using namespace std;
 void consultaUsuario::iniciar() {
     char respuesta;
     bool respuestaValida = false;
+    CCM = clientConnectionManager();
 
     while (!respuestaValida) {
         cout << "Confirme si es un usuario existente o no (s/n): ";
@@ -37,8 +38,8 @@ void consultaUsuario::iniciar() {
 
 void consultaUsuario::registrar()
 {
-    char* usuario;
-    char* contrasenya;
+    char usuario[50];
+    char contrasenya[50];
 
     cout << "Ingrese el nombre de usuario que desee: ";
     cin >> usuario;
@@ -115,6 +116,9 @@ void consultaUsuario::crearPartida()
 
     if (respuesta == 's' || respuesta == 'S') {
         cout << "Iniciando partida..." << endl;
+        CCM.initializeConnection();
+        CCM.initializeSocket();
+        CCM.connectToServer();
         jugarAhorcado();
     } else {
         cout << "Esperando a que alguien inicie la partida..." << endl;
@@ -234,9 +238,15 @@ void consultaUsuario::jugarAhorcado()
 
             if (opcion == 'L' || opcion == 'l')
             {
+                
                 char letra;
                 cout << "Ingresa una letra: ";
                 cin >> letra;
+                char cadena[2];
+                cadena[0] = letra;
+                cadena[1] = '\0';
+                char* puntero_cadena = cadena;
+                CCM.sendData(1, puntero_cadena);
 
                 procesarLetra(letra, palabra, letrasAdivinadas, intentosRestantes);
             }
@@ -270,6 +280,8 @@ void consultaUsuario::jugarAhorcado()
             cout << "Felicidades! Adivinaste la palabra: " << palabra << endl;
         else
             cout << "Oh no, has perdido. La palabra era: " << palabra << endl;
+
+        CCM.closeSocket();
 
         cout << "Quieres jugar nuevamente? (s/n): ";
         cin >> jugarNuevamente;

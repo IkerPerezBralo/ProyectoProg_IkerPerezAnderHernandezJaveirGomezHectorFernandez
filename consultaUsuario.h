@@ -3,9 +3,12 @@
 
 #include <vector>
 #include <string>
+#include "clientConnectionManager/clientConnectionManager.h"
 
 using namespace std;
 class consultaUsuario {
+private:
+    clientConnectionManager CCM;
 public:
     void iniciar();
     void registrar();
