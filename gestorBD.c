@@ -29,9 +29,10 @@ Output
 */
 int insertarUsuario(char *usuario, char *pass)
 {
+    
     uint8_t hashPass[16];
     md5String(pass, hashPass);
-
+    
     sqlite3 *db = abrirConexion();
     sqlite3_stmt *preparedstmt;
     char *query = "INSERT INTO Usuarios(usuario,password) VALUES (?,?);";
@@ -43,7 +44,7 @@ int insertarUsuario(char *usuario, char *pass)
         return -1;
     }
     sqlite3_bind_text(preparedstmt,1,usuario, -1, 0);
-    sqlite3_bind_text(preparedstmt,2,hashPass, -1, 0);
+    sqlite3_bind_text16(preparedstmt,2,hashPass, -1, 0);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
         printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
@@ -388,7 +389,9 @@ char* palabraRandom(){
         sqlite3_close(db);
         return NULL;
     }
-    char* returnPalabra = (char*)sqlite3_column_text(preparedstmt,0);
+    char* palabraelegida = sqlite3_column_text(preparedstmt,0);
+    char* returnPalabra = (char*)malloc(sizeof(char)*(strlen(palabraelegida)+1));
+    strcpy(returnPalabra,palabraelegida);
     sqlite3_finalize(preparedstmt);
     sqlite3_close(db);
     return returnPalabra;
