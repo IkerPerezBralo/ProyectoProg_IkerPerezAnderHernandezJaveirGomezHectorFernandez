@@ -46,7 +46,7 @@ int insertarUsuario(char *usuario, char *pass)
     sqlite3_bind_blob(preparedstmt, 2, hashPass, 16, 0);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
-        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        printf("Error al ejecutar el insert 0: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(preparedstmt);
         sqlite3_close(db);
         return -2;
@@ -369,7 +369,7 @@ int insertarPalabra(char *palabra)
     sqlite3_bind_text(preparedstmt, 1, palabra, -1, 0);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
-        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        printf("Error al ejecutar el insert 9: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(preparedstmt);
         sqlite3_close(db);
         return -2;
@@ -392,7 +392,7 @@ int borrarPalabraBD(char *palabra)
     sqlite3_bind_text(preparedstmt, 1, palabra, -1, 0);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
-        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        printf("Error al ejecutar el insert 8: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(preparedstmt);
         sqlite3_close(db);
         return -2;
@@ -494,7 +494,7 @@ int crearPartida(int usuarioid, char *palabra)
     sqlite3_bind_text(preparedstmt, 2, palabra, -1, 0);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
-        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        printf("Error al ejecutar el insert 4: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(preparedstmt);
         sqlite3_close(db);
         return -2;
@@ -581,7 +581,7 @@ int actualizarPartida(int idpartida,int estado){
     sqlite3_bind_int(preparedstmt, 2, idpartida);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
-        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        printf("Error al ejecutar el insert 5: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(preparedstmt);
         sqlite3_close(db);
         return -2;
@@ -610,7 +610,7 @@ int partidasGanadas(int userId){
         sqlite3_close(db);
         return result;
     }
-        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        printf("Error al ejecutar el insert 2: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(preparedstmt);
         sqlite3_close(db);
         return -2;
@@ -633,7 +633,7 @@ int partidasPerdidas(int userId){
         sqlite3_close(db);
         return result;
     }
-        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        printf("Error al ejecutar el insert 3: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(preparedstmt);
         sqlite3_close(db);
         return -2;
