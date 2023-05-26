@@ -22,7 +22,6 @@ public:
     void menuUsuario();
     void historial();
     void crearPartida();
-    void unirtePartida();
     vector<string> cargarPalabras();
     string obtenerPalabraAleatoria(const vector<string>& palabras);
     void imprimirPalabra(const string& palabra, const vector<bool>& letrasAdivinadas);

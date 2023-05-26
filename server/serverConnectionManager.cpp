@@ -99,7 +99,7 @@ int serverConnectionManager::acceptIncomingConnections()
 	int longitudPalabra =strlen(partida->palabraElegida); 
     
     sprintf(sendBuff, "%d", longitudPalabra);
-	cout<<"PATATA: "<< sendBuff<< endl;
+	
 	send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 	return 0;
 }
@@ -138,16 +138,16 @@ int serverConnectionManager::receiveData()
 					}
 					sendBuff[2 + i] = '\0';
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-					cout<<"patata0: "<< sendBuff<<endl;
+					
 				}
 				else
 				{
 					sendBuff[0] = 'N';
 					sendBuff[1] = '\0';
-					cout<<"patata1: "<< sendBuff<<endl;
+					
 					
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-					cout<<"patata1.1: "<< sendBuff<<endl;
+					
 					
 				}
 			}
@@ -155,7 +155,7 @@ int serverConnectionManager::receiveData()
 			{
 				const char *delimiter = "-";
 				const char *datos = strchr(recvBuff, *delimiter);
-				cout<<"marmota: "<< recvBuff<<endl;
+				
 				int resultado = partida->comprobarPalabra(datos+1);
 				if(resultado == 1){
 					
@@ -186,7 +186,7 @@ int serverConnectionManager::receiveData()
 		}
 		else
 		{
-			cout<<"patataFinal: "<< bytes<<endl;
+			
 		}
 
 	} while (1);
@@ -204,10 +204,10 @@ int main(int argc, char const *argv[])
 		SCM.listenToConnections();
 		SCM.acceptIncomingConnections();
 		SCM.receiveData();
-		cout<<"PATATA"<<endl;
+		
 		SCM.closeSocket();
-		cout<<"PATATA2"<<endl;
-		Sleep(2000);
+		
+		Sleep(1);
 	} while (true);
 	
 	

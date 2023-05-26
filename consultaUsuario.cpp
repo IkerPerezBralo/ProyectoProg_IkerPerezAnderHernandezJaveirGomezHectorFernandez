@@ -89,9 +89,9 @@ void consultaUsuario::menuUsuario()
         cout << "-----------------------------" << endl;
         cout << "Opciones:" << endl;
         cout << "1. Crear una partida" << endl;
-        cout << "2. Buscar partidas" << endl;
-        cout << "3. Ver historial de partidas" << endl;
-        cout << "4. Cerrar sesion" << endl;
+        
+        cout << "2. Ver historial de ultima partida" << endl;
+        cout << "3. Cerrar sesion" << endl;
         cout << "-----------------------------" << endl;
 
         int opcion;
@@ -104,15 +104,12 @@ void consultaUsuario::menuUsuario()
             cout << "Creando una partida..." << endl;
             crearPartida();
             break;
+        
         case 2:
-            cout << "Buscando partidas..." << endl;
-            unirtePartida();
+            cout << "Viendo historial de ultima partida..." << endl;
+            imprimirUltimaPArtida(usuario->id);
             break;
         case 3:
-            cout << "Viendo historial de partidas..." << endl;
-            historial();
-            break;
-        case 4:
             cout << "Cerrando sesion..." << endl;
             open = false;
             break;
@@ -156,11 +153,11 @@ void consultaUsuario::crearPartida()
         int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
         if (bytes > 0)
         {
-            printf("Longitud de la palabra: \n");
-            printf("Data received: %s \n", CCM.recvBuff);
+            
+            printf("Longitud de la palabra: %s \n", CCM.recvBuff);
             int numLetrasPalabra = stoi(CCM.recvBuff);
             CCM.partidaUsuario = new PartidaUsuario(numLetrasPalabra);
-            cout << "PARTIDA_USUARIO: " << strlen(CCM.partidaUsuario->palabra) << endl;
+            
         }
 
         jugarAhorcado();
@@ -170,9 +167,7 @@ void consultaUsuario::crearPartida()
         cout << "Esperando a que alguien inicie la partida..." << endl;
     }
 }
-void consultaUsuario::unirtePartida()
-{
-}
+
 
 vector<string> consultaUsuario::cargarPalabras()
 {
@@ -302,8 +297,8 @@ void consultaUsuario::jugarAhorcado()
                 if (bytes > 0)
                 {
 
-                    printf("Receiving message... \n");
-                    printf("Data received: %s \n", CCM.recvBuff);
+                    printf("Esperando respuesta... \n");
+                    
 
                     if (CCM.recvBuff[0] == 'N' || CCM.recvBuff[0] == 'Y')
                     {
@@ -346,8 +341,8 @@ void consultaUsuario::jugarAhorcado()
                 if (bytes > 0)
                 {
 
-                    printf("Receiving message... \n");
-                    printf("Data received: %s \n", CCM.recvBuff);
+                    printf("Esperando respuesta... \n");
+                   
 
                     if (CCM.recvBuff[0] == 'N' || CCM.recvBuff[0] == 'Y')
                     {
