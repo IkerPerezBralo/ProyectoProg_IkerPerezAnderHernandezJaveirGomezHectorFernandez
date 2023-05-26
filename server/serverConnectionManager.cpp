@@ -170,6 +170,12 @@ int serverConnectionManager::receiveData()
 					
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 				}
+			}else if(recvBuff[0] == 'x')
+			{
+				delete partida;
+				partida = NULL;
+				cout<<"SERVER DISCONNECTED... "<< bytes<<endl;
+				return 0;
 			}
 		}else if(bytes == -1)
 		{
@@ -187,13 +193,19 @@ int serverConnectionManager::receiveData()
 
 int main(int argc, char const *argv[])
 {
-	serverConnectionManager SCM = serverConnectionManager();
-	SCM.initializeServer();
-	SCM.initializeSocket(SERVER_INFOPORT);
-	SCM.bindToSocket();
-	SCM.listenToConnections();
-	SCM.acceptIncomingConnections();
-	SCM.receiveData();
-	SCM.closeSocket();
+	do
+	{
+		serverConnectionManager SCM = serverConnectionManager();
+		SCM.initializeServer();
+		SCM.initializeSocket(SERVER_INFOPORT);
+		SCM.bindToSocket();
+		SCM.listenToConnections();
+		SCM.acceptIncomingConnections();
+		SCM.receiveData();
+		SCM.closeSocket();
+		
+	} while (true);
+	
+	
 	return 0;
 }
