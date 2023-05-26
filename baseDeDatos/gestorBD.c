@@ -542,8 +542,10 @@ void imprimirUltimaPArtida(int userID){
         printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
     }
+    
     sqlite3_bind_int(preparedstmt, 1, userID);
-    if(sqlite3_step(preparedstmt) != SQLITE_ROW){
+    if(sqlite3_step(preparedstmt) == SQLITE_ROW){
+        
         imprimirHistorialPartida(sqlite3_column_int(preparedstmt,0));
     }
     sqlite3_finalize(preparedstmt);
@@ -560,7 +562,7 @@ void imprimirHistorialPartida(int idPartida){
         sqlite3_close(db);
     }
     sqlite3_bind_int(preparedstmt, 1, idPartida);
-    while(sqlite3_step(preparedstmt) != SQLITE_ROW){
+    while(sqlite3_step(preparedstmt) == SQLITE_ROW){
         printf("%s\n",sqlite3_column_text(preparedstmt,0));
     }
     sqlite3_finalize(preparedstmt);

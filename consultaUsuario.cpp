@@ -90,7 +90,7 @@ void consultaUsuario::menuUsuario()
         cout << "Opciones:" << endl;
         cout << "1. Crear una partida" << endl;
         
-        cout << "2. Ver historial de partidas" << endl;
+        cout << "2. Ver historial de ultima partida" << endl;
         cout << "3. Cerrar sesion" << endl;
         cout << "-----------------------------" << endl;
 
@@ -106,8 +106,8 @@ void consultaUsuario::menuUsuario()
             break;
         
         case 2:
-            cout << "Viendo historial de partidas..." << endl;
-            historial();
+            cout << "Viendo historial de ultima partida..." << endl;
+            imprimirUltimaPArtida(usuario->id);
             break;
         case 3:
             cout << "Cerrando sesion..." << endl;
@@ -153,11 +153,11 @@ void consultaUsuario::crearPartida()
         int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
         if (bytes > 0)
         {
-            printf("Longitud de la palabra: \n");
-            printf("Data received: %s \n", CCM.recvBuff);
+            
+            printf("Longitud de la palabra: %s \n", CCM.recvBuff);
             int numLetrasPalabra = stoi(CCM.recvBuff);
             CCM.partidaUsuario = new PartidaUsuario(numLetrasPalabra);
-            cout << "PARTIDA_USUARIO: " << strlen(CCM.partidaUsuario->palabra) << endl;
+            
         }
 
         jugarAhorcado();
@@ -297,8 +297,8 @@ void consultaUsuario::jugarAhorcado()
                 if (bytes > 0)
                 {
 
-                    printf("Receiving message... \n");
-                    printf("Data received: %s \n", CCM.recvBuff);
+                    printf("Esperando respuesta... \n");
+                    
 
                     if (CCM.recvBuff[0] == 'N' || CCM.recvBuff[0] == 'Y')
                     {
@@ -341,8 +341,8 @@ void consultaUsuario::jugarAhorcado()
                 if (bytes > 0)
                 {
 
-                    printf("Receiving message... \n");
-                    printf("Data received: %s \n", CCM.recvBuff);
+                    printf("Esperando respuesta... \n");
+                   
 
                     if (CCM.recvBuff[0] == 'N' || CCM.recvBuff[0] == 'Y')
                     {
