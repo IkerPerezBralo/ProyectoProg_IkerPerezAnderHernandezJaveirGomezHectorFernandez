@@ -579,13 +579,11 @@ int actualizarPartida(int idpartida,int estado){
     }
     sqlite3_bind_int(preparedstmt, 1, estado);
     sqlite3_bind_int(preparedstmt, 2, idpartida);
-    if (sqlite3_step(preparedstmt) != SQLITE_DONE)
-    {
-        printf("Error al ejecutar el insert 5: %s\n", sqlite3_errmsg(db));
-        sqlite3_finalize(preparedstmt);
-        sqlite3_close(db);
-        return -2;
+    do{
+        sleep(1000);
+        printf("Database locked, trying in 1000 seconds");
     }
+    while (sqlite3_step(preparedstmt) == SQLITE_LOCKED);
 
     sqlite3_finalize(preparedstmt);
     sqlite3_close(db);
