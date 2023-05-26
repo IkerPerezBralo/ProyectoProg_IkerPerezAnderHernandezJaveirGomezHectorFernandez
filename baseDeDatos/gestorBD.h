@@ -23,5 +23,6 @@ int exportarTodasPalabras(char* path);
 int crearPartida(int usuarioid,char* palabra);
 void escribirHistorial(int partID,const char* texto);
 void imprimirHistorialPartida(int idPartida);
+void imprimirPaginaPalabras(int pagina);
 
 #endif

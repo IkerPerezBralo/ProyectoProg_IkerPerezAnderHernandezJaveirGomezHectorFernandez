@@ -239,80 +239,7 @@ void anadirUsuarioConsola()
     }
 }
 
-void imprimir_ahorcado(int intentos) // No se si esto puede ir en administrador o solo en cliente
-{
-    switch (intentos)
-    {
-    case 0:
-        printf("  +---+\n");
-        printf("  |   |\n");
-        printf("      |\n");
-        printf("      |\n");
-        printf("      |\n");
-        printf("      |\n");
-        printf("=========\n");
-        break;
 
-    case 1:
-        printf("  +---+\n");
-        printf("  |   |\n");
-        printf("  O   |\n");
-        printf("      |\n");
-        printf("      |\n");
-        printf("      |\n");
-        printf("=========\n");
-        break;
-
-    case 2:
-        printf("  +---+\n");
-        printf("  |   |\n");
-        printf("  O   |\n");
-        printf("  |   |\n");
-        printf("      |\n");
-        printf("      |\n");
-        printf("=========\n");
-        break;
-
-    case 3:
-        printf("  +---+\n");
-        printf("  |   |\n");
-        printf("  O   |\n");
-        printf(" /|   |\n");
-        printf("      |\n");
-        printf("      |\n");
-        printf("=========\n");
-        break;
-
-    case 4:
-        printf("  +---+\n");
-        printf("  |   |\n");
-        printf("  O   |\n");
-        printf(" /|\\  |\n");
-        printf("      |\n");
-        printf("      |\n");
-        printf("=========\n");
-        break;
-
-    case 5:
-        printf("  +---+\n");
-        printf("  |   |\n");
-        printf("  O   |\n");
-        printf(" /|\\  |\n");
-        printf(" /    |\n");
-        printf("      |\n");
-        printf("=========\n");
-        break;
-    default:
-        printf("  +---+\n");
-        printf("  |   |\n");
-        printf("  O   |\n");
-        printf(" /|\\  |\n");
-        printf(" / \\  |\n");
-        printf("      |\n");
-        printf("=========\n");
-        break;
-    }
-}
 
 void leerDesdeArchivo(){
     FILE* archivoaLeer;
@@ -535,7 +462,7 @@ void listadoDePalabras()
     do
     {
         printf("\nLISTA DE PALABRAS - PAG%i\n", numPagina);
-        imprimirPagina(numPagina);
+        imprimirPaginaPalabras(numPagina);
         if (numPagina <= 0)
         {
             printf("\n -------------------------  x. Atras / 2. Siguiente\n");

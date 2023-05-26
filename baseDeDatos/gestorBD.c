@@ -545,4 +545,24 @@ void imprimirHistorialPartida(int idPartida){
     }
     sqlite3_finalize(preparedstmt);
     sqlite3_close(db);
+    
+}
+
+void imprimirPaginaPalabras(int pagina){
+    int offset = pagina*10;
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query = "SELECT palabra FROM palabra ORDER BY palabra LIMIT 10 OFFSET ?;";
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+    }
+    sqlite3_bind_int(preparedstmt, 1, offset);
+    int i = 0;
+    while(sqlite3_step(preparedstmt) == SQLITE_ROW){
+        printf("%s\n",sqlite3_column_text(preparedstmt,0));
+    }
+    sqlite3_finalize(preparedstmt);
+    sqlite3_close(db);
 }
