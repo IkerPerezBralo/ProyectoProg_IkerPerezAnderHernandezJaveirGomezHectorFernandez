@@ -314,10 +314,10 @@ void consultaUsuario::jugarAhorcado()
                 char *palabraAdivinadaChar = new char[palabraAdivinada.length() + 1];
                 strcpy(palabraAdivinadaChar, palabraAdivinada.c_str());
                 CCM.sendData(2, palabraAdivinadaChar+'\0');
-                int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
+                /*int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
                 printf("Receiving message... \n");
-                        printf("Data received: %s \n", CCM.recvBuff);
-                /*do
+                        printf("Data received: %s \n", CCM.recvBuff);*/
+                do
                 {
                     
                     int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
@@ -332,7 +332,7 @@ void consultaUsuario::jugarAhorcado()
                             break;
                     }
                 } while (1);
-                */
+                
                 
                     if (palabraAdivinada == palabra)
                 {
