@@ -184,6 +184,7 @@ Output
 */
 Usuario *informacionUsuario(int userID)
 {
+    
     sqlite3 *db = abrirConexion();
     sqlite3_stmt *preparedstmt;
     char *query = sqlite3_mprintf("SELECT usuario FROM Usuarios WHERE id=%d;", userID);
@@ -193,6 +194,7 @@ Usuario *informacionUsuario(int userID)
         sqlite3_close(db);
         return NULL;
     }
+   
     if (sqlite3_step(preparedstmt) != SQLITE_ROW)
     {
         printf("No se ha encontrado ningun usuario con el id %d \n", userID);
@@ -200,9 +202,13 @@ Usuario *informacionUsuario(int userID)
         sqlite3_close(db);
         return NULL;
     }
+    
     Usuario *foundUser = (Usuario *)malloc(sizeof(Usuario));
+   
     foundUser->id = userID;
+    foundUser->nombre = (char *)malloc(strlen(sqlite3_column_text(preparedstmt, 0))+1);
     strcpy(foundUser->nombre, sqlite3_column_text(preparedstmt, 0));
+    
     sqlite3_finalize(preparedstmt);
     sqlite3_close(db);
     return foundUser;

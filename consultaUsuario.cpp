@@ -30,8 +30,8 @@ void consultaUsuario::iniciar() {
         } else if (respuesta == 'n' || respuesta == 'N') {
             cout << "Interfaz de registrar usuario" << endl;
             
-            //respuestaValida = registrar();
-            respuestaValida = true;
+            respuestaValida = registrar();
+           //respuestaValida = true;
         } else {
             cout << "Respuesta invalida. Por favor, introduce 's' o 'n'." << endl;
         }
@@ -50,13 +50,17 @@ bool consultaUsuario::registrar()
 
     cout << "Ingrese su contrasenya: ";
     cin >> contrasenya;
-
+    
     
     insertarUsuario(usuarioNombre, contrasenya);
+   
     usuarioID = logIn(usuarioNombre, contrasenya);
+    
     if(usuarioID >= 0)
     {
+        
         usuario = informacionUsuario(usuarioID);
+        
         return true;
     }
     cout << "Fallo al identificar usuario"<< endl;
