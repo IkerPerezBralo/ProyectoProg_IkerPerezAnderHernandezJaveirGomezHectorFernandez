@@ -591,3 +591,51 @@ int actualizarPartida(int idpartida,int estado){
     sqlite3_close(db);
     return 1;
 }
+
+int partidasGanadas(int userId){
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query = "SELECT COUNT(*) FROM partida WHERE usuario1=? AND estado=1";
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    sqlite3_bind_int(preparedstmt, 1, userId);
+    if (sqlite3_step(preparedstmt) == SQLITE_ROW)
+    {
+        int result = sqlite3_column_int(preparedstmt,0);
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return result;
+    }
+        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return -2;
+}
+int partidasPerdidas(int userId){
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query = "SELECT COUNT(*) FROM partida WHERE usuario1=? AND estado=2";
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    sqlite3_bind_int(preparedstmt, 1, userId);
+    if (sqlite3_step(preparedstmt) == SQLITE_ROW)
+    {
+        int result = sqlite3_column_int(preparedstmt,0);
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return result;
+    }
+        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return -2;
+
+}
