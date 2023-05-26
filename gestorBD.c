@@ -42,7 +42,7 @@ int insertarUsuario(char *usuario, char *pass)
         return -1;
     }
     sqlite3_bind_text(preparedstmt, 1, usuario, -1, 0);
-    sqlite3_bind_text16(preparedstmt, 2, hashPass, -1, 0);
+    sqlite3_bind_blob(preparedstmt, 2, hashPass, 16, 0);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
         printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
@@ -113,17 +113,28 @@ int logIn(char *usuario, char *pass)
         return -2;
     }
     uint8_t hashPass[16];
+    uint8_t *recoveredpass = (uint8_t *)sqlite3_column_blob(preparedstmt, 1);
     md5String(pass, hashPass);
-    printf("%s - %s\n", (char *)hashPass, sqlite3_column_text(preparedstmt, 1));
-    if (strcmp(hashPass, sqlite3_column_text(preparedstmt, 1)) == 0)
+    //printf("%s - %s\n", hashPass, recoveredpass);
+    for (int i = 0; i < 16; i++)
+    {
+        if (hashPass[0]!=recoveredpass[0])
+        {
+            sqlite3_finalize(preparedstmt);
+            sqlite3_close(db);
+            return -3;
+        }
+    }
+    /*if (strcmp(hashPass, sqlite3_column_text(preparedstmt, 1)) == 0)
     {
         sqlite3_finalize(preparedstmt);
         sqlite3_close(db);
         return sqlite3_column_int(preparedstmt, 0);
-    }
+    }*/
+    int userid = sqlite3_column_int(preparedstmt, 0);
     sqlite3_finalize(preparedstmt);
     sqlite3_close(db);
-    return -3;
+    return userid;
 }
 
 /*
@@ -404,7 +415,7 @@ char *palabraRandom()
         sqlite3_close(db);
         return NULL;
     }
-    char *palabraelegida = sqlite3_column_text(preparedstmt, 0);
+    const char *palabraelegida = sqlite3_column_text(preparedstmt, 0);
     char *returnPalabra = (char *)malloc(sizeof(char) * (strlen(palabraelegida) + 1));
     strcpy(returnPalabra, palabraelegida);
     sqlite3_finalize(preparedstmt);
@@ -459,7 +470,7 @@ int exportarTodasPalabras(char *path)
     return 1;
 }
 
-int crearPartida(int usuarioid,char* palabra)
+int crearPartida(int usuarioid, char *palabra)
 {
     sqlite3 *db = abrirConexion();
     sqlite3_stmt *preparedstmt;
@@ -471,8 +482,8 @@ int crearPartida(int usuarioid,char* palabra)
         sqlite3_close(db);
         return -1;
     }
-    sqlite3_bind_int(preparedstmt,usuarioid,0);
-    sqlite3_bind_text(preparedstmt, 1, palabra, -1, 1);
+    sqlite3_bind_int(preparedstmt, usuarioid, 0);
+    sqlite3_bind_text(preparedstmt, 1, palabra, -1, 0);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
         printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
@@ -480,14 +491,15 @@ int crearPartida(int usuarioid,char* palabra)
         sqlite3_close(db);
         return -2;
     }
-    
+
     sqlite3_finalize(preparedstmt);
     int partidaid = sqlite3_last_insert_rowid(db);
     sqlite3_close(db);
     return partidaid;
 }
 
-void escribirHistorial(int partID,const char* texto){
+void escribirHistorial(int partID, const char *texto)
+{
     sqlite3 *db = abrirConexion();
     sqlite3_stmt *preparedstmt;
     char *query = "INSERT INTO historia(idPartida,accion) VALUES (?,?);";
@@ -497,15 +509,15 @@ void escribirHistorial(int partID,const char* texto){
         printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
     }
-    sqlite3_bind_int(preparedstmt,partID,0);
-    sqlite3_bind_text(preparedstmt, 1, texto, -1, 1);
+    sqlite3_bind_int(preparedstmt, partID, 0);
+    sqlite3_bind_text(preparedstmt, 1, texto, -1, 0);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
         printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(preparedstmt);
         sqlite3_close(db);
     }
-    
+
     sqlite3_finalize(preparedstmt);
     sqlite3_close(db);
 }

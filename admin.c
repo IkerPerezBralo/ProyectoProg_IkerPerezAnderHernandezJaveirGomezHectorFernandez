@@ -219,9 +219,11 @@ void anadirUsuarioConsola()
     char contrasenya[PALABRA_MAS_LARGA];
     printf("Nombre de usuario: ");
     fgets(usuario, PALABRA_MAS_LARGA, stdin);
+    usuario[strcspn(usuario, "\n")] = '\0';
     fflush(stdin);
     printf("Password: ");
     fgets(contrasenya, PALABRA_MAS_LARGA, stdin);
+    contrasenya[strcspn(contrasenya, "\n")] = '\0';
     fflush(stdin);
     switch (insertarUsuario(usuario, contrasenya))
     {
