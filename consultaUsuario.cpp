@@ -75,52 +75,52 @@ bool consultaUsuario::registrar()
 
 void consultaUsuario::menuUsuario()
 {
-    int victorias = 5;
-    int derrotas = 3;
-
-    cout << "-----------------------------" << endl;
-    cout << "   Ahorcado The Game" << endl;
-    cout << "-----------------------------" << endl;
-    cout << "Victorias: " << victorias << endl;
-    cout << "Derrotas: " << derrotas << endl;
-    cout << "-----------------------------" << endl;
-    cout << "Opciones:" << endl;
-    cout << "1. Crear una partida" << endl;
-    cout << "2. Buscar partidas" << endl;
-    cout << "3. Ver historial de partidas" << endl;
-    cout << "4. Cerrar sesion" << endl;
-    cout << "-----------------------------" << endl;
-
-    int opcion;
-    cout << "Ingrese el numero de opcion deseada: ";
-    cin >> opcion;
-
-    switch (opcion)
+    bool open = true;
+    do
     {
-    case 1:
-        cout << "Creando una partida..." << endl;
-        crearPartida();
-        break;
-    case 2:
-        cout << "Buscando partidas..." << endl;
-        unirtePartida();
-        break;
-    case 3:
-        cout << "Viendo historial de partidas..." << endl;
-        historial();
-        break;
-    case 4:
-        cout << "Cerrando sesion..." << endl;
-        cout << "..." << endl;
-        cout << "..." << endl;
-        cout << "..." << endl;
-        cout << "Sesion cerrada" << endl;
-        iniciar();
-        break;
-    default:
-        cout << "Opcion invalida." << endl;
-        break;
-    }
+        int victorias = 5;
+        int derrotas = 3;
+
+        cout << "-----------------------------" << endl;
+        cout << "   Ahorcado The Game" << endl;
+        cout << "-----------------------------" << endl;
+        cout << "Victorias: " << victorias << endl;
+        cout << "Derrotas: " << derrotas << endl;
+        cout << "-----------------------------" << endl;
+        cout << "Opciones:" << endl;
+        cout << "1. Crear una partida" << endl;
+        cout << "2. Buscar partidas" << endl;
+        cout << "3. Ver historial de partidas" << endl;
+        cout << "4. Cerrar sesion" << endl;
+        cout << "-----------------------------" << endl;
+
+        int opcion;
+        cout << "Ingrese el numero de opcion deseada: ";
+        cin >> opcion;
+
+        switch (opcion)
+        {
+        case 1:
+            cout << "Creando una partida..." << endl;
+            crearPartida();
+            break;
+        case 2:
+            cout << "Buscando partidas..." << endl;
+            unirtePartida();
+            break;
+        case 3:
+            cout << "Viendo historial de partidas..." << endl;
+            historial();
+            break;
+        case 4:
+            cout << "Cerrando sesion..." << endl;
+            open = false;
+            break;
+        default:
+            cout << "Opcion invalida." << endl;
+            break;
+        }
+    } while (open);
 }
 
 void consultaUsuario::historial()
@@ -259,117 +259,124 @@ void consultaUsuario::jugarAhorcado()
 
     cout << "Bienvenido al juego del ahorcado!" << endl;
 
-    char jugarNuevamente = 's';
-    while (jugarNuevamente == 's' || jugarNuevamente == 'S')
+    string palabra = obtenerPalabraAleatoria(palabras);
+    int longitudPalabra = palabra.length();
+
+    vector<bool> letrasAdivinadas(longitudPalabra, false);
+    int intentosRestantes = 6;
+
+    cout << "Adivina la palabra!" << endl;
+
+    bool jugando = true;
+    while (CCM.partidaUsuario->vidas > 0 && jugando)
     {
-        string palabra = obtenerPalabraAleatoria(palabras);
-        int longitudPalabra = palabra.length();
+        cout << "Intentos restantes: " << CCM.partidaUsuario->vidas << endl;
 
-        vector<bool> letrasAdivinadas(longitudPalabra, false);
-        int intentosRestantes = 6;
-
-        cout << "Adivina la palabra!" << endl;
-
-        while (CCM.partidaUsuario->vidas > 0 && !todasLetrasAdivinadas(letrasAdivinadas))
-        {
-            cout << "Intentos restantes: " << CCM.partidaUsuario->vidas << endl;
-            
-            //  imprimirPalabra(palabra, letrasAdivinadas);
-            cout << endl;
-
-            char opcion;
-            cout << "Deseas adivinar una letra (L) o la palabra completa (P)? ";
-            cin >> opcion;
-
-            if (opcion == 'L' || opcion == 'l')
-            {
-
-                char letra;
-                cout << "Ingresa una letra: ";
-                cin >> letra;
-                char cadena[4];
-                cadena[0] = letra;
-                cadena[1] = '\0';
-                char *puntero_cadena = cadena;
-                CCM.sendData(1, puntero_cadena);
-
-                // int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
-                // cout<<CCM.recvBuff<<endl;
-
-                do
-                {
-
-                    int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
-
-                    if (bytes > 0)
-                    {
-
-                        printf("Receiving message... \n");
-                        printf("Data received: %s \n", CCM.recvBuff);
-
-                        if (CCM.recvBuff[0] == 'N' || CCM.recvBuff[0] == 'Y')
-                        {
-
-                            if (CCM.recvBuff[0] == 'Y')
-                            {
-                                const char *delimiter = "-";
-                                const char *datos = strchr(CCM.recvBuff, *delimiter);
-                                
-                                CCM.partidaUsuario->actualizar(datos+1);
-                            }else
-                            {
-                               CCM.partidaUsuario->vidas--;     
-
-                            }
-                            CCM.partidaUsuario->imprimir_ahorcado();
-                            cout << (CCM.recvBuff+2)<<endl;
-                            break;
-                        }
-                    }
-
-                } while (1);
-
-                // QUITARprocesarLetra(letra, palabra, letrasAdivinadas, intentosRestantes);
-            }
-            else if (opcion == 'P' || opcion == 'p')
-            {
-                string palabraAdivinada;
-                cout << "Ingresa la palabra completa: ";
-                cin >> palabraAdivinada;
-                char *palabraAdivinadaChar = new char[palabraAdivinada.length() + 1];
-                strcpy(palabraAdivinadaChar, palabraAdivinada.c_str());
-                CCM.sendData(2, palabraAdivinadaChar + '\0');
-                
-                do
-                {
-
-                    int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
-
-                    if (bytes > 0)
-                    {
-
-                        printf("Receiving message... \n");
-                        printf("Data received: %s \n", CCM.recvBuff);
-
-                        if (CCM.recvBuff[0] == 'N' || CCM.recvBuff[0] == 'Y')
-                            break;
-                    }
-                } while (1);
-
-               
-            }
-            else
-            {
-                cout << "Opcion invalida. Por favor, elige 'L' para adivinar una letra o 'P' para adivinar la palabra completa." << endl;
-            }
-        }
-
-        CCM.closeSocket();
-
-        cout << "Quieres jugar nuevamente? (s/n): ";
-        cin >> jugarNuevamente;
+        //  imprimirPalabra(palabra, letrasAdivinadas);
         cout << endl;
+
+        char opcion;
+        cout << "Deseas adivinar una letra (L) o la palabra completa (P)? ";
+        cin >> opcion;
+
+        if (opcion == 'L' || opcion == 'l')
+        {
+
+            char letra;
+            cout << "Ingresa una letra: ";
+            cin >> letra;
+            char cadena[4];
+            cadena[0] = letra;
+            cadena[1] = '\0';
+            char *puntero_cadena = cadena;
+            CCM.sendData(1, puntero_cadena);
+
+            // int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
+            // cout<<CCM.recvBuff<<endl;
+
+            do
+            {
+
+                int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
+
+                if (bytes > 0)
+                {
+
+                    printf("Receiving message... \n");
+                    printf("Data received: %s \n", CCM.recvBuff);
+
+                    if (CCM.recvBuff[0] == 'N' || CCM.recvBuff[0] == 'Y')
+                    {
+
+                        if (CCM.recvBuff[0] == 'Y')
+                        {
+                            const char *delimiter = "-";
+                            const char *datos = strchr(CCM.recvBuff, *delimiter);
+
+                            CCM.partidaUsuario->actualizar(datos + 1);
+                        }
+                        else
+                        {
+                            CCM.partidaUsuario->vidas--;
+                        }
+                        CCM.partidaUsuario->imprimir_ahorcado();
+                        cout << (CCM.recvBuff + 2) << endl;
+                        break;
+                    }
+                }
+
+            } while (1);
+
+            // QUITARprocesarLetra(letra, palabra, letrasAdivinadas, intentosRestantes);
+        }
+        else if (opcion == 'P' || opcion == 'p')
+        {
+            string palabraAdivinada;
+            cout << "Ingresa la palabra completa: ";
+            cin >> palabraAdivinada;
+            char *palabraAdivinadaChar = new char[palabraAdivinada.length() + 1];
+            strcpy(palabraAdivinadaChar, palabraAdivinada.c_str());
+            CCM.sendData(2, palabraAdivinadaChar + '\0');
+
+            do
+            {
+
+                int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
+
+                if (bytes > 0)
+                {
+
+                    printf("Receiving message... \n");
+                    printf("Data received: %s \n", CCM.recvBuff);
+
+                    if (CCM.recvBuff[0] == 'N' || CCM.recvBuff[0] == 'Y')
+                    {
+                        if (CCM.recvBuff[0] == 'Y')
+                        {
+                            cout << usuario->nombre << " ha ganado la partida.";
+                            jugando = false;
+                            sprintf(CCM.sendBuff, "x");
+                            send(CCM.s, CCM.sendBuff, sizeof(CCM.sendBuff), 0);
+                        }
+                        else
+                        {
+                            CCM.partidaUsuario->vidas--;
+                            CCM.partidaUsuario->imprimir_ahorcado();
+                            cout << (CCM.recvBuff + 2) << endl;
+                        }
+
+                        break;
+                    }
+                }
+            } while (1);
+        }
+        else
+        {
+            cout << "Opcion invalida. Por favor, elige 'L' para adivinar una letra o 'P' para adivinar la palabra completa." << endl;
+        }
     }
+
+    CCM.closeSocket();
 
     cout << "Gracias por jugar!" << endl;
 }
