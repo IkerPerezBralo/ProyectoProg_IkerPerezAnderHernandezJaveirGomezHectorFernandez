@@ -30,7 +30,7 @@ clientConnectionManager::~clientConnectionManager()
         return 0;
     }
 
-int clientConnectionManager::initializeSocket()
+int clientConnectionManager::initializeSocket(int puertoJugador)
 {
     if ((s = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
 		printf("Could not create socket : %d", WSAGetLastError());
@@ -42,7 +42,7 @@ int clientConnectionManager::initializeSocket()
 
 	server.sin_addr.s_addr = inet_addr(SERVER_IP);
 	server.sin_family = AF_INET;
-	server.sin_port = htons(SERVER_PORT);
+	server.sin_port = htons(puertoJugador);
     return 0;
 
 }

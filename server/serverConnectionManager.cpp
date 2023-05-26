@@ -25,7 +25,7 @@ int serverConnectionManager::initializeServer()
     printf("Initialised.");
     return 0;
 }
-int serverConnectionManager::initializeSocket()
+int serverConnectionManager::initializeSocket(int puerto)
 {
     if ((conn_socket = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
 		printf("Could not create socket : %d", WSAGetLastError());
@@ -37,7 +37,7 @@ int serverConnectionManager::initializeSocket()
 
 	server.sin_addr.s_addr = inet_addr(SERVER_IP);
 	server.sin_family = AF_INET;
-	server.sin_port = htons(SERVER_PORT);
+	server.sin_port = htons(SERVER_PORT_1);
     return 0;
 }
 int serverConnectionManager::bindToSocket()
@@ -129,7 +129,7 @@ int main(int argc, char const *argv[])
 {
     serverConnectionManager SCM = serverConnectionManager();
     SCM.initializeServer();
-    SCM.initializeSocket();
+    SCM.initializeSocket(SERVER_INFOPORT);
     SCM.bindToSocket();
     SCM.listenToConnections();
     SCM.acceptIncomingConnections();
