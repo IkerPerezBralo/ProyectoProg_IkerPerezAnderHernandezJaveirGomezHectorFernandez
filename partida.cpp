@@ -74,7 +74,7 @@ void Partida::setUsuario2(int user2id){
     escribirHistorial(id,mensaje.c_str());
 }
 
-int Partida::comprobarPalabra(char* inPalabra){
+int Partida::comprobarPalabra(const char* inPalabra){
     for(int i=0;palabraElegida[0]!='\0';i++){
         char charCom = toupper(inPalabra[i]);
         if(palabraElegida[i]!=charCom){

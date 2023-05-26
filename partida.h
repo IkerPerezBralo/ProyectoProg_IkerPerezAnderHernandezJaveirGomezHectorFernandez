@@ -23,7 +23,7 @@ class Partida{
         ~Partida();
 
         int comprobarLetra(char letra);
-        int comprobarPalabra(char* palabra);
+        int comprobarPalabra(const char* palabra);
         void setUsuario2(int user2id);
 };
 
