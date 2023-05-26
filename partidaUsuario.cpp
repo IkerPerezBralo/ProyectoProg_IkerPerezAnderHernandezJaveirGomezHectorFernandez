@@ -1,6 +1,8 @@
 #include<iostream>
 #include "partidaUsuario.h"
 
+using namespace std;
+
 PartidaUsuario::PartidaUsuario(int palabraSize){
     vidas=6;
     palabra = new char[palabraSize+1];
@@ -19,73 +21,73 @@ void PartidaUsuario::actualizar(const char* progreso){
 void PartidaUsuario::imprimir_ahorcado() {
     switch (vidas) {
         case 6:
-            std::cout << "  +---+" << std::endl;
-            std::cout << "  |   |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "=========" << std::endl;
+            cout << "  +---+" << endl;
+            cout << "  |   |" << endl;
+            cout << "      |" << endl;
+            cout << "      |" << endl;
+            cout << "      |" << endl;
+            cout << "      |" << endl;
+            cout << "=========" << endl;
             break;
 
         case 5:
-            std::cout << "  +---+" << std::endl;
-            std::cout << "  |   |" << std::endl;
-            std::cout << "  O   |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "=========" << std::endl;
+            cout << "  +---+" << endl;
+            cout << "  |   |" << endl;
+            cout << "  O   |" << endl;
+            cout << "      |" << endl;
+            cout << "      |" << endl;
+            cout << "      |" << endl;
+            cout << "=========" << endl;
             break;
 
         case 4:
-            std::cout << "  +---+" << std::endl;
-            std::cout << "  |   |" << std::endl;
-            std::cout << "  O   |" << std::endl;
-            std::cout << "  |   |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "=========" << std::endl;
+            cout << "  +---+" << endl;
+            cout << "  |   |" << endl;
+            cout << "  O   |" << endl;
+            cout << "  |   |" << endl;
+            cout << "      |" << endl;
+            cout << "      |" << endl;
+            cout << "=========" << endl;
             break;
 
         case 3:
-            std::cout << "  +---+" << std::endl;
-            std::cout << "  |   |" << std::endl;
-            std::cout << "  O   |" << std::endl;
-            std::cout << " /|   |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "=========" << std::endl;
+            cout << "  +---+" << endl;
+            cout << "  |   |" << endl;
+            cout << "  O   |" << endl;
+            cout << " /|   |" << endl;
+            cout << "      |" << endl;
+            cout << "      |" << endl;
+            cout << "=========" << endl;
             break;
 
         case 2:
-            std::cout << "  +---+" << std::endl;
-            std::cout << "  |   |" << std::endl;
-            std::cout << "  O   |" << std::endl;
-            std::cout << " /|\\  |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "=========" << std::endl;
+            cout << "  +---+" << endl;
+            cout << "  |   |" << endl;
+            cout << "  O   |" << endl;
+            cout << " /|\\  |" << endl;
+            cout << "      |" << endl;
+            cout << "      |" << endl;
+            cout << "=========" << endl;
             break;
 
         case 1:
-            std::cout << "  +---+" << std::endl;
-            std::cout << "  |   |" << std::endl;
-            std::cout << "  O   |" << std::endl;
-            std::cout << " /|\\  |" << std::endl;
-            std::cout << " /    |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "=========" << std::endl;
+            cout << "  +---+" << endl;
+            cout << "  |   |" << endl;
+            cout << "  O   |" << endl;
+            cout << " /|\\  |" << endl;
+            cout << " /    |" << endl;
+            cout << "      |" << endl;
+            cout << "=========" << endl;
             break;
 
         case 0:
-            std::cout << "  +---+" << std::endl;
-            std::cout << "  |   |" << std::endl;
-            std::cout << "  O   |" << std::endl;
-            std::cout << " /|\\  |" << std::endl;
-            std::cout << " / \\  |" << std::endl;
-            std::cout << "      |" << std::endl;
-            std::cout << "=========" << std::endl;
+            cout << "  +---+" << endl;
+            cout << "  |   |" << endl;
+            cout << "  O   |" << endl;
+            cout << " /|\\  |" << endl;
+            cout << " / \\  |" << endl;
+            cout << "      |" << endl;
+            cout << "=========" << endl;
             break;
     }
 }
