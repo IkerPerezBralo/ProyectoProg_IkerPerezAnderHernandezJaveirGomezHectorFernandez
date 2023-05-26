@@ -62,3 +62,13 @@ void Partida::setUsuario2(int user2id){
     mensaje += " se ha unido a la partida.";
     escribirHistorial(id,mensaje.c_str());
 }
+
+int Partida::comprobarPalabra(char* inPalabra){
+    for(int i=0;palabraElegida[0]!='\0';i++){
+        char charCom = toupper(inPalabra[i]);
+        if(palabraElegida[i]!=charCom){
+            return 0;
+        }
+    }
+    return 1;
+}
