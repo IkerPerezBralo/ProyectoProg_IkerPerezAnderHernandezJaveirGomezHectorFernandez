@@ -62,8 +62,10 @@ int Partida::comprobarLetra(char letra){
     }else {
         mensaje+= usuario2->nombre;
     }
-    mensaje+= " ha intentado adivinar la letra " + letra;
-    mensaje+=  " y se han encontrado" + std::to_string(encontradas);
+    mensaje+= " ha intentado adivinar la letra ";
+    mensaje+= letra;
+    mensaje+=  " y se han encontrado ";
+    mensaje+= std::to_string(encontradas);
     escribirHistorial(id,mensaje.c_str());
     return encontradas;
 };
