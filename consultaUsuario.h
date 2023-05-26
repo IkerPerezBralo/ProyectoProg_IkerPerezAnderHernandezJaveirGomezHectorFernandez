@@ -7,6 +7,9 @@
 extern "C"{
     #include "baseDeDatos/gestorBD.h"
 }
+#define SERVER_PORT_1 6000
+#define SERVER_PORT_2 6001
+#define SERVER_INFOPORT 6002
 using namespace std;
 class consultaUsuario {
 private:

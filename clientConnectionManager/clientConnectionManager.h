@@ -6,21 +6,22 @@
 #include <winsock2.h>
 
 #define SERVER_IP "127.0.0.1"
-#define SERVER_PORT 6000
+
 
 class clientConnectionManager
 {
 private:
     WSADATA wsaData;
-    SOCKET s;
+    
     struct sockaddr_in server;
     char sendBuff[512], recvBuff[512];
 public:
+    SOCKET s;
     clientConnectionManager(/* args */);
     ~clientConnectionManager();
 
     int initializeConnection();
-    int initializeSocket();
+    int initializeSocket(int puertoJugador);
     int connectToServer();
     int sendData(int type, char* data);
     int closeSocket();

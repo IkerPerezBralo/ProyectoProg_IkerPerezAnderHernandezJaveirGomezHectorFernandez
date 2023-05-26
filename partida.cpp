@@ -2,13 +2,16 @@
 #include<string>
 #include<string.h>
 #include<ctype.h>
-
+#include<iostream>
+using namespace std;
 extern "C"{
     #include "baseDeDatos/gestorBD.h"
 }
 
 Partida::Partida(int user1id){
+    
     palabraElegida = palabraRandom();
+    
     int longitud = strlen(palabraElegida);
     progresoPalabra = new char[longitud+1];
     for(int i =0;i<=longitud;i++){
@@ -18,13 +21,21 @@ Partida::Partida(int user1id){
             progresoPalabra[i] = '\0';
         }
     }
+    
     turno=1;
     usuario1=informacionUsuario(user1id);
-    usuario2=NULL;
+  
+    cout<< "patata: "<<user1id<< endl;
+    
     id= crearPartida(user1id,palabraElegida);
-    std::string mensaje = usuario2->nombre;
+    
+    
+    string mensaje = usuario1->nombre;
     mensaje += " ha creado una partida.";
     escribirHistorial(id,mensaje.c_str());
+    
+    
+  
 }
 
 Partida::~Partida(){
