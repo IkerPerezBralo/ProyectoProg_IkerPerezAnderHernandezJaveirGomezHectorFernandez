@@ -2,11 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <Windows.h>
+
 
 #include "sqlite3.h"
 #include "md5.h"
 #include "usuario.h"
 #include "gestorBD.h"
+
 
 sqlite3 *abrirConexion()
 {
@@ -580,7 +583,7 @@ int actualizarPartida(int idpartida,int estado){
     sqlite3_bind_int(preparedstmt, 1, estado);
     sqlite3_bind_int(preparedstmt, 2, idpartida);
     do{
-        sleep(1000);
+        Sleep(1);
         printf("Database locked, trying in 1000 seconds");
     }
     while (sqlite3_step(preparedstmt) == SQLITE_LOCKED);
