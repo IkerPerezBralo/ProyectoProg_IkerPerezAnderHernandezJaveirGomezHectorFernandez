@@ -1,5 +1,7 @@
 #include "serverConnectionManager.h"
-
+#include <iostream>
+#include <string>
+using namespace std;
 
 
 serverConnectionManager::serverConnectionManager()
@@ -9,6 +11,7 @@ serverConnectionManager::serverConnectionManager()
 
 serverConnectionManager::~serverConnectionManager()
 {
+	delete partida;
 }
 
 int serverConnectionManager::initializeServer()
@@ -77,7 +80,18 @@ int serverConnectionManager::acceptIncomingConnections()
 		if (bytes > 0) {
             printf("Receiving match name: \n");
 			printf("NAME RECEIVED:\n \t %s \n", recvBuff);
-        
+			const char* delimiter = "-";
+    
+    		const char* datos = strchr(recvBuff, *delimiter);
+			int datosConvertidos;
+			if (datos != nullptr) {
+				++datos;  // Avanzar un carácter después del guion
+				cout << datos << endl;  // Imprime "Datos"
+				datosConvertidos = stoi(datos);
+				cout << datosConvertidos << endl;
+				partida = new Partida(datosConvertidos);
+				cout <<"patata0"<<endl;
+			}
         }
     return 0;
 
@@ -93,18 +107,23 @@ int serverConnectionManager::closeSocket()
 }
 int serverConnectionManager::receiveData()
 {
+	
     do
     {
     int bytes = recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 		if (bytes > 0) {
             printf("Receiving message... \n");
 			printf("DATA RECEIVED:\n \t %s \n", recvBuff);
-        
+
+
         }
         
     } while (1);
     return 0;
 }
+
+
+	
 
 int main(int argc, char const *argv[])
 {

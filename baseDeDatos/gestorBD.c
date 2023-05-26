@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 #include "sqlite3.h"
 #include "md5.h"
 #include "usuario.h"
@@ -407,7 +408,7 @@ char *palabraRandom()
 {
     sqlite3 *db = abrirConexion();
     sqlite3_stmt *preparedstmt;
-    char *query = "SELECT * FROM palabra ORDER BY RANDOM() LIMIT 1;";
+    char *query = "SELECT palabra FROM palabra ORDER BY RANDOM() LIMIT 1;";
     if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
     {
         printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
@@ -488,8 +489,9 @@ int crearPartida(int usuarioid, char *palabra)
         sqlite3_close(db);
         return -1;
     }
-    sqlite3_bind_int(preparedstmt, usuarioid, 0);
-    sqlite3_bind_text(preparedstmt, 1, palabra, -1, 0);
+    printf("patata2: %d", usuarioid);
+    sqlite3_bind_int(preparedstmt, 1,usuarioid );
+    sqlite3_bind_text(preparedstmt, 2, palabra, -1, 0);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
         printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
@@ -515,8 +517,8 @@ void escribirHistorial(int partID, const char *texto)
         printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
     }
-    sqlite3_bind_int(preparedstmt, partID, 0);
-    sqlite3_bind_text(preparedstmt, 1, texto, -1, 0);
+    sqlite3_bind_int(preparedstmt, 1,partID );
+    sqlite3_bind_text(preparedstmt, 2, texto, -1, 0);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)
     {
         printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
