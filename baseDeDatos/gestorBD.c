@@ -427,7 +427,6 @@ char *palabraRandom()
     strcpy(returnPalabra, palabraelegida);
     sqlite3_finalize(preparedstmt);
     sqlite3_close(db);
-    returnPalabra[strlen(palabraelegida)]= '\0';
     return returnPalabra;
 }
 

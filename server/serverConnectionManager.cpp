@@ -151,20 +151,25 @@ int serverConnectionManager::receiveData()
 				cout<<"marmota: "<< recvBuff<<endl;
 				int resultado = partida->comprobarPalabra(datos+1);
 				if(resultado == 1){
-					cout<<"marmotaV: "<< partida->palabraElegida<< " - "<< datos+1<<endl;
+					
 					sendBuff[0] = 'Y';
 					sendBuff[1] = '\0';
-					cout<<"patata1: "<< sendBuff<<endl;
+					
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 				}else {
-					cout<<"marmotaF: "<< partida->palabraElegida<< " - "<< datos+1<<endl;
+					
 					sendBuff[0] = 'N';
 					sendBuff[1] = '\0';
-					cout<<"patata1: "<< sendBuff<<endl;
+					
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 				}
 			}
-		}else
+		}else if(bytes == -1)
+		{
+			cout<<"SERVER DISCONNECTED... "<< bytes<<endl;
+			return 0;
+		}
+		else
 		{
 			cout<<"patataFinal: "<< bytes<<endl;
 		}
