@@ -24,5 +24,8 @@ int crearPartida(int usuarioid,char* palabra);
 void escribirHistorial(int partID,const char* texto);
 void imprimirHistorialPartida(int idPartida);
 void imprimirPaginaPalabras(int pagina);
+int actualizarPartida(int idpartida,int estado);
+int partidasGanadas(int userId);
+int partidasPerdidas(int userId);
 
 #endif
