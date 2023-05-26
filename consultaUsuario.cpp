@@ -78,8 +78,8 @@ void consultaUsuario::menuUsuario()
     bool open = true;
     do
     {
-        int victorias = 5;
-        int derrotas = 3;
+        int victorias= partidasGanadas(usuario->id);
+        int derrotas = partidasPerdidas(usuario->id);
 
         cout << "-----------------------------" << endl;
         cout << "   Ahorcado The Game" << endl;
@@ -357,6 +357,7 @@ void consultaUsuario::jugarAhorcado()
                             jugando = false;
                             sprintf(CCM.sendBuff, "x");
                             send(CCM.s, CCM.sendBuff, sizeof(CCM.sendBuff), 0);
+                            
                         }
                         else
                         {
@@ -375,7 +376,11 @@ void consultaUsuario::jugarAhorcado()
             cout << "Opcion invalida. Por favor, elige 'L' para adivinar una letra o 'P' para adivinar la palabra completa." << endl;
         }
     }
-
+    if(CCM.partidaUsuario->vidas == 0)
+    {
+        sprintf(CCM.sendBuff, "X");
+        send(CCM.s, CCM.sendBuff, sizeof(CCM.sendBuff), 0);
+    }
     CCM.closeSocket();
 
     cout << "Gracias por jugar!" << endl;
