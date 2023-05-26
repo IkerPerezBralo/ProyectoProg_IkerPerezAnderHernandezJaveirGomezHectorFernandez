@@ -64,7 +64,7 @@ int clientConnectionManager::sendData(int type, char* data)
 {
     sprintf(sendBuff, "%d-%s", type, data);
     send(s, sendBuff, sizeof(sendBuff), 0);
-    cout<<sendBuff<<endl; 
+     
    
     return 0;
 }

@@ -14,8 +14,9 @@ private:
     WSADATA wsaData;
     
     struct sockaddr_in server;
-    char sendBuff[512], recvBuff[512];
+    
 public:
+    char sendBuff[512], recvBuff[512];
     SOCKET s;
     clientConnectionManager(/* args */);
     ~clientConnectionManager();

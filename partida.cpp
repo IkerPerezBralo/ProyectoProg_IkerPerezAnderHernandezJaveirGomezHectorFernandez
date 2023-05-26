@@ -12,6 +12,7 @@ Partida::Partida(int user1id){
     
     palabraElegida = palabraRandom();
     
+    
     int longitud = strlen(palabraElegida);
     progresoPalabra = new char[longitud+1];
     for(int i =0;i<=longitud;i++){
@@ -75,9 +76,13 @@ void Partida::setUsuario2(int user2id){
 }
 
 int Partida::comprobarPalabra(const char* inPalabra){
-    for(int i=0;palabraElegida[0]!='\0';i++){
+    strcpy(palabraElegida, palabraElegida);
+    for(int i=0;palabraElegida[i]!='\0';i++){
         char charCom = toupper(inPalabra[i]);
+        cout<<palabraElegida[i] << " - "<< charCom<< endl;
+        
         if(palabraElegida[i]!=charCom){
+            
             return 0;
         }
     }

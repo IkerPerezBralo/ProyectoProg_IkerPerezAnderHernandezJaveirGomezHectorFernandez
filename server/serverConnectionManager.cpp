@@ -122,35 +122,51 @@ int serverConnectionManager::receiveData()
 				int resultado = partida->comprobarLetra(datosConvertidos);
 				if (resultado > 0)
 				{
-					sendBuff[0] = 'N';
+					sendBuff[0] = 'Y';
 					sendBuff[1] = '-';
 					int i;
 					for (i = 0; partida->progresoPalabra[i] != '\0'; i++)
 					{
 						sendBuff[2 + i] = partida->progresoPalabra[i];
 					}
-					sendBuff[3 + i] = '\0';
+					sendBuff[2 + i] = '\0';
+					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+					cout<<"patata0: "<< sendBuff<<endl;
 				}
 				else
 				{
 					sendBuff[0] = 'N';
 					sendBuff[1] = '\0';
+					cout<<"patata1: "<< sendBuff<<endl;
+					
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+					cout<<"patata1.1: "<< sendBuff<<endl;
+					
 				}
 			}
 			else if (recvBuff[0] == '2')
 			{
 				const char *delimiter = "-";
 				const char *datos = strchr(recvBuff, *delimiter);
-				int resultado = partida->comprobarPalabra(datos);
+				cout<<"marmota: "<< recvBuff<<endl;
+				int resultado = partida->comprobarPalabra(datos+1);
 				if(resultado == 1){
-					sendBuff[0] = 'N';
-					sendBuff[1] = '\0';
-				}else {
+					cout<<"marmotaV: "<< partida->palabraElegida<< " - "<< datos+1<<endl;
 					sendBuff[0] = 'Y';
 					sendBuff[1] = '\0';
+					cout<<"patata1: "<< sendBuff<<endl;
+					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+				}else {
+					cout<<"marmotaF: "<< partida->palabraElegida<< " - "<< datos+1<<endl;
+					sendBuff[0] = 'N';
+					sendBuff[1] = '\0';
+					cout<<"patata1: "<< sendBuff<<endl;
+					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 				}
 			}
+		}else
+		{
+			cout<<"patataFinal: "<< bytes<<endl;
 		}
 
 	} while (1);
