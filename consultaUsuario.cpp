@@ -6,40 +6,33 @@
 #include <cstdlib>
 #include "consultaUsuario.h"
 
-extern "C"
-{
-#include "baseDeDatos/gestorBD.h"
+extern "C"{
+    #include "baseDeDatos/gestorBD.h"
 }
 
 using namespace std;
 
-void consultaUsuario::iniciar()
-{
+void consultaUsuario::iniciar() {
     char respuesta;
     bool respuestaValida = false;
     CCM = clientConnectionManager();
 
-    while (!respuestaValida)
-    {
+    while (!respuestaValida) {
         cout << "Confirme si es un usuario existente o no (s/n): ";
         cin >> respuesta;
 
-        if (respuesta == 's' || respuesta == 'S')
-        {
+        if (respuesta == 's' || respuesta == 'S') {
             cout << "Interfaz de iniciar usuario" << endl;
+           
 
             respuestaValida = logInUsuario();
-            // respuestaValida = true;
-        }
-        else if (respuesta == 'n' || respuesta == 'N')
-        {
+            //respuestaValida = true;
+        } else if (respuesta == 'n' || respuesta == 'N') {
             cout << "Interfaz de registrar usuario" << endl;
-
+            
             respuestaValida = registrar();
-            // respuestaValida = true;
-        }
-        else
-        {
+           //respuestaValida = true;
+        } else {
             cout << "Respuesta invalida. Por favor, introduce 's' o 'n'." << endl;
         }
     }
@@ -57,20 +50,21 @@ bool consultaUsuario::registrar()
 
     cout << "Ingrese su contrasenya: ";
     cin >> contrasenya;
-
+    
+    
     insertarUsuario(usuarioNombre, contrasenya);
-
+   
     usuarioID = logIn(usuarioNombre, contrasenya);
-
-    if (usuarioID >= 0)
+    
+    if(usuarioID >= 0)
     {
-
+        
         usuario = informacionUsuario(usuarioID);
-
+        
         return true;
     }
-    cout << "Fallo al identificar usuario" << endl;
-    return false;
+    cout << "Fallo al identificar usuario"<< endl;
+        return false;
 }
 
 void consultaUsuario::menuUsuario()
@@ -95,31 +89,30 @@ void consultaUsuario::menuUsuario()
     cout << "Ingrese el numero de opcion deseada: ";
     cin >> opcion;
 
-    switch (opcion)
-    {
-    case 1:
-        cout << "Creando una partida..." << endl;
-        crearPartida();
-        break;
-    case 2:
-        cout << "Buscando partidas..." << endl;
-        unirtePartida();
-        break;
-    case 3:
-        cout << "Viendo historial de partidas..." << endl;
-        historial();
-        break;
-    case 4:
-        cout << "Cerrando sesion..." << endl;
-        cout << "..." << endl;
-        cout << "..." << endl;
-        cout << "..." << endl;
-        cout << "Sesion cerrada" << endl;
-        iniciar();
-        break;
-    default:
-        cout << "Opcion invalida." << endl;
-        break;
+    switch (opcion) {
+        case 1:
+            cout << "Creando una partida..." << endl;
+            crearPartida();
+            break;
+        case 2:
+            cout << "Buscando partidas..." << endl;
+            unirtePartida();
+            break;
+        case 3:
+            cout << "Viendo historial de partidas..." << endl;
+            historial();
+            break;
+        case 4:
+            cout << "Cerrando sesion..." << endl;
+            cout << "..." << endl;
+            cout << "..." << endl;
+            cout << "..." << endl;
+            cout << "Sesion cerrada" << endl;
+            iniciar();
+            break;
+        default:
+            cout << "Opcion invalida." << endl;
+            break;
     }
 }
 
@@ -131,38 +124,21 @@ void consultaUsuario::historial()
 
 void consultaUsuario::crearPartida()
 {
-    char respuesta[50];
-    bool hayPartida;
-    CCM.initializeConnection();
-    CCM.initializeSocket(SERVER_INFOPORT);
-    CCM.connectToServer();
-    do
-    {
-        int bytes = recv(CCM.s, respuesta, sizeof(respuesta), 0);
-        if (bytes > 0)
-        {
-
-            printf("DATA RECEIVED:\n \t %s \n", respuesta);
-        }
-
-    } while (1);
+    cout << "Partida creada. Esperando a que alguien se una..." << endl;
     // CONSEGUIR HACER QUE ESPERA A QUE SE UNA ALGUIEN
     cout << "ESPERANDO..." << endl;
     char respuesta;
     cout << "Desea empezar la partida? (s/n): ";
     cin >> respuesta;
 
-    if (respuesta == 's' || respuesta == 'S')
-    {
-
-        cout << "Partida creada. Esperando a que alguien se una..." << endl;
-
+    if (respuesta == 's' || respuesta == 'S') {
+        cout << "Iniciando partida..." << endl;
         CCM.initializeConnection();
         CCM.initializeSocket(SERVER_PORT_1);
         CCM.connectToServer();
 
         /*Pruebas para ver si enviaría un userID*/
-
+    
         int userID = usuario->id;
         char userIDchar[20];
         string str = to_string(userID);
@@ -171,14 +147,13 @@ void consultaUsuario::crearPartida()
         /*Final de prueba*/
 
         jugarAhorcado();
-    }
-    else
-    {
+    } else {
         cout << "Esperando a que alguien inicie la partida..." << endl;
     }
 }
 void consultaUsuario::unirtePartida()
 {
+
 }
 
 vector<string> consultaUsuario::cargarPalabras()
@@ -199,13 +174,13 @@ vector<string> consultaUsuario::cargarPalabras()
     return palabras;
 }
 
-string consultaUsuario::obtenerPalabraAleatoria(const vector<string> &palabras)
+string consultaUsuario::obtenerPalabraAleatoria(const vector<string>& palabras)
 {
     int indice = rand() % palabras.size();
     return palabras[indice];
 }
 
-void consultaUsuario::imprimirPalabra(const string &palabra, const vector<bool> &letrasAdivinadas)
+void consultaUsuario::imprimirPalabra(const string& palabra, const vector<bool>& letrasAdivinadas)
 {
     for (int i = 0; i < palabra.length(); i++)
     {
@@ -217,7 +192,7 @@ void consultaUsuario::imprimirPalabra(const string &palabra, const vector<bool> 
     cout << endl;
 }
 
-void consultaUsuario::procesarLetra(char letra, const string &palabra, vector<bool> &letrasAdivinadas, int &intentosRestantes)
+void consultaUsuario::procesarLetra(char letra, const string& palabra, vector<bool>& letrasAdivinadas, int& intentosRestantes)
 {
     bool letraAdivinada = false;
 
@@ -234,7 +209,7 @@ void consultaUsuario::procesarLetra(char letra, const string &palabra, vector<bo
         intentosRestantes--;
 }
 
-bool consultaUsuario::todasLetrasAdivinadas(const vector<bool> &letrasAdivinadas)
+bool consultaUsuario::todasLetrasAdivinadas(const vector<bool>& letrasAdivinadas)
 {
     for (bool letraAdivinada : letrasAdivinadas)
     {
@@ -290,14 +265,14 @@ void consultaUsuario::jugarAhorcado()
 
             if (opcion == 'L' || opcion == 'l')
             {
-
+                
                 char letra;
                 cout << "Ingresa una letra: ";
                 cin >> letra;
                 char cadena[4];
                 cadena[0] = letra;
                 cadena[1] = '\0';
-                char *puntero_cadena = cadena;
+                char* puntero_cadena = cadena;
                 CCM.sendData(1, puntero_cadena);
 
                 procesarLetra(letra, palabra, letrasAdivinadas, intentosRestantes);
@@ -307,7 +282,7 @@ void consultaUsuario::jugarAhorcado()
                 string palabraAdivinada;
                 cout << "Ingresa la palabra completa: ";
                 cin >> palabraAdivinada;
-                char *palabraAdivinadaChar = new char[palabraAdivinada.length() + 1];
+                char* palabraAdivinadaChar = new char[palabraAdivinada.length() + 1];
                 strcpy(palabraAdivinadaChar, palabraAdivinada.c_str());
                 CCM.sendData(2, palabraAdivinadaChar);
 
@@ -356,11 +331,12 @@ bool consultaUsuario::logInUsuario()
     cout << "Ingrese su contrasenya: ";
     cin >> contrasenya;
     usuarioID = logIn(usuarioNombre, contrasenya);
-    if (usuarioID >= 0)
+    if(usuarioID >= 0)
     {
-        usuario = informacionUsuario(usuarioID);
+        usuario= informacionUsuario(usuarioID);
         return true;
     }
-    cout << "Fallo en el login" << endl;
-    return false;
+    cout << "Fallo en el login"<< endl;
+        return false;
+
 }

@@ -489,7 +489,7 @@ int crearPartida(int usuarioid, char *palabra)
         sqlite3_close(db);
         return -1;
     }
-    printf("patata2: %d", usuarioid);
+    
     sqlite3_bind_int(preparedstmt, 1,usuarioid );
     sqlite3_bind_text(preparedstmt, 2, palabra, -1, 0);
     if (sqlite3_step(preparedstmt) != SQLITE_DONE)

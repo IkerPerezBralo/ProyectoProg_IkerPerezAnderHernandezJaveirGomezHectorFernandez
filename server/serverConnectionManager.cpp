@@ -81,17 +81,16 @@ int serverConnectionManager::acceptIncomingConnections()
             printf("Receiving match name: \n");
 			printf("NAME RECEIVED:\n \t %s \n", recvBuff);
 			const char* delimiter = "-";
-    
+			
     		const char* datos = strchr(recvBuff, *delimiter);
 			int datosConvertidos;
 			if (datos != nullptr) {
 				++datos;  // Avanzar un carácter después del guion
-				cout << datos << endl;  // Imprime "Datos"
 				datosConvertidos = stoi(datos);
-				cout << datosConvertidos << endl;
 				partida = new Partida(datosConvertidos);
-				cout <<"patata0"<<endl;
+				
 			}
+			
         }
     return 0;
 
@@ -114,7 +113,22 @@ int serverConnectionManager::receiveData()
 		if (bytes > 0) {
             printf("Receiving message... \n");
 			printf("DATA RECEIVED:\n \t %s \n", recvBuff);
+			const char* delimiter = "-";
 
+			if(recvBuff[0] == '1')
+			{
+				char datosConvertidos = recvBuff[2];	
+				int resultado = partida->comprobarLetra(datosConvertidos);
+				if(resultado >0)
+				{
+					
+				}else
+				{
+					sendBuff[0] = 'N';
+					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+				}
+			}
+    		
 
         }
         
@@ -123,7 +137,9 @@ int serverConnectionManager::receiveData()
 }
 
 
-	
+
+
+
 
 int main(int argc, char const *argv[])
 {
