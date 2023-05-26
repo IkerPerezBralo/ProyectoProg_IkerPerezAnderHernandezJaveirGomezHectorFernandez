@@ -121,7 +121,13 @@ int serverConnectionManager::receiveData()
 				int resultado = partida->comprobarLetra(datosConvertidos);
 				if(resultado >0)
 				{
-					
+					sendBuff[0] = 'N';
+					sendBuff[1] = '-';
+					int i;
+					for(i=0;partida->progresoPalabra[i]!='\0';i++){
+						sendBuff[2+i]=partida->progresoPalabra[i];
+					}
+					sendBuff[3+i]='\0';
 				}else
 				{
 					sendBuff[0] = 'N';
