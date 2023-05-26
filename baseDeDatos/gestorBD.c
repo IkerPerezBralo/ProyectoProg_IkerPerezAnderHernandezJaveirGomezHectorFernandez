@@ -566,3 +566,28 @@ void imprimirPaginaPalabras(int pagina){
     sqlite3_finalize(preparedstmt);
     sqlite3_close(db);
 }
+
+int actualizarPartida(int idpartida,int estado){
+    sqlite3 *db = abrirConexion();
+    sqlite3_stmt *preparedstmt;
+    char *query = "UPDATE partida SET estado=? WHERE id=?;";
+    if (sqlite3_prepare(db, query, -1, &preparedstmt, 0) != SQLITE_OK)
+    {
+        printf("Error en el prepared statement : %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+    sqlite3_bind_int(preparedstmt, 1, estado);
+    sqlite3_bind_int(preparedstmt, 2, idpartida);
+    if (sqlite3_step(preparedstmt) != SQLITE_DONE)
+    {
+        printf("Error al ejecutar el insert : %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(preparedstmt);
+        sqlite3_close(db);
+        return -2;
+    }
+
+    sqlite3_finalize(preparedstmt);
+    sqlite3_close(db);
+    return 1;
+}
