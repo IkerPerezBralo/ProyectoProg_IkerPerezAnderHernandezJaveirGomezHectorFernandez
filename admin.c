@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "sqlite3.h"
+#include "baseDeDatos/sqlite3.h"
 #include <unistd.h>
-#include "usuario.h"
-#include "gestorBD.h"
+#include "baseDeDatos/usuario.h"
+#include "baseDeDatos/gestorBD.h"
 #define PALABRA_MAS_LARGA 15
 #define NOMBRE_ARCHIVO_PALABRAS "palabras.txt"
 #define NOMBRE_ARCHIVO_OUTPUT "output.txt"

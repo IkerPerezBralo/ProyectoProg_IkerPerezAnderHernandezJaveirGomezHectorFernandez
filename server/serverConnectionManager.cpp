@@ -4,6 +4,7 @@
 
 serverConnectionManager::serverConnectionManager()
 {
+	
 }
 
 serverConnectionManager::~serverConnectionManager()
@@ -72,6 +73,12 @@ int serverConnectionManager::acceptIncomingConnections()
 	}
 	printf("Incomming connection from: %s (%d)\n", inet_ntoa(client.sin_addr),
 			ntohs(client.sin_port));
+	int bytes = recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
+		if (bytes > 0) {
+            printf("Receiving match name: \n");
+			printf("NAME RECEIVED:\n \t %s \n", recvBuff);
+        
+        }
     return 0;
 
 }

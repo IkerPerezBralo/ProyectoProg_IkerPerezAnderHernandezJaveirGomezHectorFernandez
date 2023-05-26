@@ -7,7 +7,7 @@
 #include "consultaUsuario.h"
 
 extern "C"{
-    #include "gestorBD.h"
+    #include "baseDeDatos/gestorBD.h"
 }
 
 using namespace std;
@@ -23,11 +23,14 @@ void consultaUsuario::iniciar() {
 
         if (respuesta == 's' || respuesta == 'S') {
             cout << "Interfaz de iniciar usuario" << endl;
+           
 
-            respuestaValida = true;
+            respuestaValida = logInUsuario();
+            //respuestaValida = true;
         } else if (respuesta == 'n' || respuesta == 'N') {
             cout << "Interfaz de registrar usuario" << endl;
-            registrar();
+            
+            //respuestaValida = registrar();
             respuestaValida = true;
         } else {
             cout << "Respuesta invalida. Por favor, introduce 's' o 'n'." << endl;
@@ -36,18 +39,28 @@ void consultaUsuario::iniciar() {
     menuUsuario();
 }
 
-void consultaUsuario::registrar()
+bool consultaUsuario::registrar()
 {
-    char usuario[50];
+    char usuarioNombre[50];
     char contrasenya[50];
+    int usuarioID;
 
     cout << "Ingrese el nombre de usuario que desee: ";
-    cin >> usuario;
+    cin >> usuarioNombre;
 
     cout << "Ingrese su contrasenya: ";
     cin >> contrasenya;
 
-    insertarUsuario(usuario, contrasenya);
+    
+    insertarUsuario(usuarioNombre, contrasenya);
+    usuarioID = logIn(usuarioNombre, contrasenya);
+    if(usuarioID >= 0)
+    {
+        usuario = informacionUsuario(usuarioID);
+        return true;
+    }
+    cout << "Fallo al identificar usuario"<< endl;
+        return false;
 }
 
 void consultaUsuario::menuUsuario()
@@ -119,6 +132,16 @@ void consultaUsuario::crearPartida()
         CCM.initializeConnection();
         CCM.initializeSocket();
         CCM.connectToServer();
+
+        /*Pruebas para ver si enviaría un userID*/
+    
+        int userID = usuario->id;
+        char userIDchar[20];
+        string str = to_string(userID);
+        strcpy(userIDchar, str.c_str());
+        CCM.sendData(0, userIDchar);
+        /*Final de prueba*/
+
         jugarAhorcado();
     } else {
         cout << "Esperando a que alguien inicie la partida..." << endl;
@@ -242,7 +265,7 @@ void consultaUsuario::jugarAhorcado()
                 char letra;
                 cout << "Ingresa una letra: ";
                 cin >> letra;
-                char cadena[2];
+                char cadena[4];
                 cadena[0] = letra;
                 cadena[1] = '\0';
                 char* puntero_cadena = cadena;
@@ -255,6 +278,9 @@ void consultaUsuario::jugarAhorcado()
                 string palabraAdivinada;
                 cout << "Ingresa la palabra completa: ";
                 cin >> palabraAdivinada;
+                char* palabraAdivinadaChar = new char[palabraAdivinada.length() + 1];
+                strcpy(palabraAdivinadaChar, palabraAdivinada.c_str());
+                CCM.sendData(2, palabraAdivinadaChar);
 
                 if (palabraAdivinada == palabra)
                 {
@@ -289,4 +315,24 @@ void consultaUsuario::jugarAhorcado()
     }
 
     cout << "Gracias por jugar!" << endl;
+}
+
+bool consultaUsuario::logInUsuario()
+{
+    char usuarioNombre[50];
+    char contrasenya[50];
+    int usuarioID;
+    cout << "Ingrese su nombre de usuario: ";
+    cin >> usuarioNombre;
+    cout << "Ingrese su contrasenya: ";
+    cin >> contrasenya;
+    usuarioID = logIn(usuarioNombre, contrasenya);
+    if(usuarioID >= 0)
+    {
+        usuario= informacionUsuario(usuarioID);
+        return true;
+    }
+    cout << "Fallo en el login"<< endl;
+        return false;
+
 }

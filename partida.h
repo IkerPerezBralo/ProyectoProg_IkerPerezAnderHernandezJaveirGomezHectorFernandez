@@ -3,7 +3,7 @@
 
 #ifndef USUARIO_H_
 extern "C"{
-    #include "usuario.h"
+    #include "baseDeDatos/usuario.h"
 }
 #endif
 

@@ -4,15 +4,18 @@
 #include <vector>
 #include <string>
 #include "clientConnectionManager/clientConnectionManager.h"
-
+extern "C"{
+    #include "baseDeDatos/gestorBD.h"
+}
 using namespace std;
 class consultaUsuario {
 private:
     clientConnectionManager CCM;
+    Usuario* usuario;
 public:
     void iniciar();
-    void registrar();
-    void logIn();
+    bool registrar();
+    bool logInUsuario();
     void menuUsuario();
     void historial();
     void crearPartida();
