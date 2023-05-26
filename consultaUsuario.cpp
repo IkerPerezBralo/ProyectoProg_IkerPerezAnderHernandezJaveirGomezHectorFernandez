@@ -23,11 +23,14 @@ void consultaUsuario::iniciar() {
 
         if (respuesta == 's' || respuesta == 'S') {
             cout << "Interfaz de iniciar usuario" << endl;
+           
 
-            respuestaValida = true;
+            respuestaValida = logInUsuario();
+            //respuestaValida = true;
         } else if (respuesta == 'n' || respuesta == 'N') {
             cout << "Interfaz de registrar usuario" << endl;
-            registrar();
+            
+            //respuestaValida = registrar();
             respuestaValida = true;
         } else {
             cout << "Respuesta invalida. Por favor, introduce 's' o 'n'." << endl;
@@ -36,18 +39,28 @@ void consultaUsuario::iniciar() {
     menuUsuario();
 }
 
-void consultaUsuario::registrar()
+bool consultaUsuario::registrar()
 {
-    char usuario[50];
+    char usuarioNombre[50];
     char contrasenya[50];
+    int usuarioID;
 
     cout << "Ingrese el nombre de usuario que desee: ";
-    cin >> usuario;
+    cin >> usuarioNombre;
 
     cout << "Ingrese su contrasenya: ";
     cin >> contrasenya;
 
-    insertarUsuario(usuario, contrasenya);
+    
+    insertarUsuario(usuarioNombre, contrasenya);
+    usuarioID = logIn(usuarioNombre, contrasenya);
+    if(usuarioID >= 0)
+    {
+        usuario = informacionUsuario(usuarioID);
+        return true;
+    }
+    cout << "Fallo al identificar usuario"<< endl;
+        return false;
 }
 
 void consultaUsuario::menuUsuario()
@@ -119,6 +132,16 @@ void consultaUsuario::crearPartida()
         CCM.initializeConnection();
         CCM.initializeSocket();
         CCM.connectToServer();
+
+        /*Pruebas para ver si enviaría un userID*/
+    
+        int userID = usuario->id;
+        char userIDchar[20];
+        string str = to_string(userID);
+        strcpy(userIDchar, str.c_str());
+        CCM.sendData(0, userIDchar);
+        /*Final de prueba*/
+
         jugarAhorcado();
     } else {
         cout << "Esperando a que alguien inicie la partida..." << endl;
@@ -132,7 +155,7 @@ void consultaUsuario::unirtePartida()
 vector<string> consultaUsuario::cargarPalabras()
 {
     vector<string> palabras;
-    ifstream archivo("baseDeDatos/palabras.txt");
+    ifstream archivo("palabras.txt");
     string palabra;
 
     if (archivo.is_open())
@@ -292,4 +315,24 @@ void consultaUsuario::jugarAhorcado()
     }
 
     cout << "Gracias por jugar!" << endl;
+}
+
+bool consultaUsuario::logInUsuario()
+{
+    char usuarioNombre[50];
+    char contrasenya[50];
+    int usuarioID;
+    cout << "Ingrese su nombre de usuario: ";
+    cin >> usuarioNombre;
+    cout << "Ingrese su contrasenya: ";
+    cin >> contrasenya;
+    usuarioID = logIn(usuarioNombre, contrasenya);
+    if(usuarioID >= 0)
+    {
+        usuario= informacionUsuario(usuarioID);
+        return true;
+    }
+    cout << "Fallo en el login"<< endl;
+        return false;
+
 }
