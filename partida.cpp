@@ -26,7 +26,7 @@ Partida::Partida(int user1id){
     turno=1;
     usuario1=informacionUsuario(user1id);
   
-    cout<< "patata: "<<user1id<< endl;
+    
     
     id= crearPartida(user1id,palabraElegida);
     
