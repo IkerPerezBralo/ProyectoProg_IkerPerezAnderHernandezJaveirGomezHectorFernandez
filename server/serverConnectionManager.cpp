@@ -170,11 +170,13 @@ int serverConnectionManager::receiveData()
 					
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 				}
-			}else if(recvBuff[0] == 'x')
+			}else if(recvBuff[0] == 'x'||recvBuff[0] == 'X')
 			{
+				int estado = recvBuff[0] == 'X'?2:1;
+				partida->setEstado(estado);
 				delete partida;
 				partida = NULL;
-				cout<<"SERVER DISCONNECTED... "<< bytes<<endl;
+				
 				return 0;
 			}
 		}else if(bytes == -1)
@@ -202,8 +204,10 @@ int main(int argc, char const *argv[])
 		SCM.listenToConnections();
 		SCM.acceptIncomingConnections();
 		SCM.receiveData();
+		cout<<"PATATA"<<endl;
 		SCM.closeSocket();
-		
+		cout<<"PATATA2"<<endl;
+		Sleep(2000);
 	} while (true);
 	
 	
