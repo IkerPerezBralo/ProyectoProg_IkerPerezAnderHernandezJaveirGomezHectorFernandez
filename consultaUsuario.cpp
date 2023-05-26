@@ -5,7 +5,7 @@
 #include <ctime>
 #include <cstdlib>
 #include "consultaUsuario.h"
-
+#include "partidaUsuario.h"
 extern "C"
 {
 #include "baseDeDatos/gestorBD.h"
@@ -153,6 +153,15 @@ void consultaUsuario::crearPartida()
         strcpy(userIDchar, str.c_str());
         CCM.sendData(0, userIDchar);
         /*Final de prueba*/
+        int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
+        if (bytes > 0)
+        {
+            printf("Longitud de la palabra: \n");
+            printf("Data received: %s \n", CCM.recvBuff);
+            int numLetrasPalabra = stoi(CCM.recvBuff);
+            CCM.partidaUsuario = new PartidaUsuario(numLetrasPalabra);
+            cout << "PARTIDA_USUARIO: " << strlen(CCM.partidaUsuario->palabra) << endl;
+        }
 
         jugarAhorcado();
     }
@@ -261,11 +270,11 @@ void consultaUsuario::jugarAhorcado()
 
         cout << "Adivina la palabra!" << endl;
 
-        while (intentosRestantes > 0 && !todasLetrasAdivinadas(letrasAdivinadas))
+        while (CCM.partidaUsuario->vidas > 0 && !todasLetrasAdivinadas(letrasAdivinadas))
         {
-            cout << "Intentos restantes: " << intentosRestantes << endl;
-            cout << "Palabra: ";
-            imprimirPalabra(palabra, letrasAdivinadas);
+            cout << "Intentos restantes: " << CCM.partidaUsuario->vidas << endl;
+            
+            //  imprimirPalabra(palabra, letrasAdivinadas);
             cout << endl;
 
             char opcion;
@@ -283,28 +292,44 @@ void consultaUsuario::jugarAhorcado()
                 cadena[1] = '\0';
                 char *puntero_cadena = cadena;
                 CCM.sendData(1, puntero_cadena);
-                
-                //int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
-                //cout<<CCM.recvBuff<<endl;
-                
+
+                // int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
+                // cout<<CCM.recvBuff<<endl;
+
                 do
                 {
-                    
+
                     int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
-                    
+
                     if (bytes > 0)
                     {
-                        
+
                         printf("Receiving message... \n");
                         printf("Data received: %s \n", CCM.recvBuff);
-                        
+
                         if (CCM.recvBuff[0] == 'N' || CCM.recvBuff[0] == 'Y')
+                        {
+
+                            if (CCM.recvBuff[0] == 'Y')
+                            {
+                                const char *delimiter = "-";
+                                const char *datos = strchr(CCM.recvBuff, *delimiter);
+                                
+                                CCM.partidaUsuario->actualizar(datos+1);
+                            }else
+                            {
+                               CCM.partidaUsuario->vidas--;     
+
+                            }
+                            CCM.partidaUsuario->imprimir_ahorcado();
+                            cout << (CCM.recvBuff+2)<<endl;
                             break;
+                        }
                     }
+
                 } while (1);
-                
-                
-                procesarLetra(letra, palabra, letrasAdivinadas, intentosRestantes);
+
+                // QUITARprocesarLetra(letra, palabra, letrasAdivinadas, intentosRestantes);
             }
             else if (opcion == 'P' || opcion == 'p')
             {
@@ -313,52 +338,32 @@ void consultaUsuario::jugarAhorcado()
                 cin >> palabraAdivinada;
                 char *palabraAdivinadaChar = new char[palabraAdivinada.length() + 1];
                 strcpy(palabraAdivinadaChar, palabraAdivinada.c_str());
-                CCM.sendData(2, palabraAdivinadaChar+'\0');
-                /*int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
-                printf("Receiving message... \n");
-                        printf("Data received: %s \n", CCM.recvBuff);*/
+                CCM.sendData(2, palabraAdivinadaChar + '\0');
+                
                 do
                 {
-                    
+
                     int bytes = recv(CCM.s, CCM.recvBuff, sizeof(CCM.recvBuff), 0);
-                    
+
                     if (bytes > 0)
                     {
-                        
+
                         printf("Receiving message... \n");
                         printf("Data received: %s \n", CCM.recvBuff);
-                        
+
                         if (CCM.recvBuff[0] == 'N' || CCM.recvBuff[0] == 'Y')
                             break;
                     }
                 } while (1);
-                
-                
-                    if (palabraAdivinada == palabra)
-                {
-                    for (size_t i = 0; i < letrasAdivinadas.size(); i++)
-                    {
-                        letrasAdivinadas[i] = true;
-                    }
-                    break;
-                }
-                else
-                {
-                    //cout << "Palabra incorrecta. Pierdes un intento." << endl;
-                    intentosRestantes--;
-                }
+
+               
             }
             else
             {
                 cout << "Opcion invalida. Por favor, elige 'L' para adivinar una letra o 'P' para adivinar la palabra completa." << endl;
             }
         }
-        
-        if (todasLetrasAdivinadas(letrasAdivinadas))
-            cout << "Felicidades! Adivinaste la palabra: " << palabra << endl;
-        else
-            cout << "Oh no, has perdido. La palabra era: " << palabra << endl;
-        
+
         CCM.closeSocket();
 
         cout << "Quieres jugar nuevamente? (s/n): ";

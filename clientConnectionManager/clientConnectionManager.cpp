@@ -13,7 +13,7 @@ clientConnectionManager::clientConnectionManager()
 }
 clientConnectionManager::~clientConnectionManager()
 {
-    
+    delete partidaUsuario;
 }
 
 

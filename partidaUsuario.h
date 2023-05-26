@@ -3,9 +3,9 @@
 
 class PartidaUsuario{
     private:
-        int vidas;
-    public:
         
+    public:
+        int vidas;
         char* palabra;
 
         PartidaUsuario(int palabraSize);

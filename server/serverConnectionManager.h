@@ -32,6 +32,7 @@ public:
     int sendData(char* data);
     int closeSocket();
     int receiveData();
+    
 };
 
 
